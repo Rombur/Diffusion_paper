@@ -1,0 +1,58 @@
+\section{IP} \label{sec_ip}
+The equation that we want to discretize is:
+\begin{equation}
+  -\bn D \bn \phi + \Sigma_a \phi = Q.
+  \label{diffusion}
+\end{equation}
+To discretize \Cref{diffusion} with discontinuous finite elements, we apply
+the interior penalty method \cite{Kanschat2007} to:
+\begin{equation}
+  -\bn D \bn \phi + \Sigma_a \phi = Q_0\ \textrm{ for } \br \in \mc{D},
+\end{equation}
+\begin{equation}
+  \frac{1}{4}\phi - \frac{1}{2} D \partial_n \phi =0\ \textrm{ for } \br \in
+  \partial \mc{D}^d,
+\end{equation}
+and
+\begin{equation}
+  -D \partial_n \phi = J^{inc}\ \textrm{ for } \br \in \partial \mc{D}^r,
+\end{equation}
+to get:
+\begin{equation}
+  b_{IP}(\phi,\phi^*) = l_{IP}(\phi^*),
+\end{equation}
+where:
+\begin{equation}
+  \begin{split}
+    b_{IP} (\phi,\phi) =& \(\Sigma_a \phi,\phi^*\)_{\mc{D}} + 
+    \(D\bn\phi,\bn\phi^*\)_{\mc{D}} +
+    (\kappa_e^{IP}\ldb\phi\rdb,\ldb\phi^*\rdb)_{E_h^i}\\
+    &+ \(\ldb\phi\rdb,\llb D\partial_n \phi^*\rrb\)_{E_h^i}+ \(\llb D
+    \partial_n \phi\rrb,\ldb\phi^*\rdb\)_{E_h^i}\\
+    & \(\kappa_e^{IP} \phi,\phi^*\)_{\partial \mc{D}^d}
+    -\frac{1}{2}\(\phi,D\partial_n\phi^*\)_{\partial \mc{D}^d}\\
+    &-\frac{1}{2}\(D\partial_n\phi,\phi\)_{\partial \mc{D}^d}
+  \end{split}
+\end{equation}
+and:
+\begin{equation}
+  l_{IP}(\phi^*) = (Q_0,\phi^*)_{\mc{D}} + (J^{inc},\phi^*)_{\partial
+  \mc{D}^r}.
+\end{equation}
+The penalty parameter $\kappa_e^{IP}$ is given:
+\begin{equation}
+  \kappa_e^{IP} = \left\{
+    \begin{aligned}
+      &\frac{c(p^+)}{2}\frac{D^+}{h_{\bot}^+}+\frac{c(p^-)}{2}
+      \frac{D^-}{h_{\bot}^-} & \textrm{ on interior edges, i.e., } e \in E_h^i\\
+      & c(p)\frac{D}{h_{\bot}} & \textrm{ on boundary edges, i.e., } e\in
+      \partial \mc{D}^d
+    \end{aligned}
+    \right.
+\end{equation}
+where $c(p) =CP(p+1)$, $C$ is a constant (we used $C=2$), $p$ is the
+polynomial order, $D$ is the diffusion coefficient, and $h_{\bot}$ is the
+length of the cell in the direction orthogonal to edge $e$.  The + and -
+symbols represent the values on either side of an edge. With the penalty
+coefficient $\kappa_e^{IP}$, the IP bilinear form is symmetric positive
+definite.

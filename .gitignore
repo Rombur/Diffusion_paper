@@ -1,8 +1,10 @@
 *.un~
 *.swp
+*.swo
 *.sty
 *.aux
 *.log
 *.bbl
 *.pdf
 *.blg
+test_amr
