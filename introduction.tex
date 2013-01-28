@@ -1,19 +1,20 @@
 \section{Introduction} \label{sec_intro}
 In this paper, we are interested in solving the diffusion equation on a
-polygonal mesh. We want to point the usefulness of using polygonal cells. Such
-cell type present a big advantage over traditional cells type (triangles and
-rectangles): polygonal cells allow for meshing flexibility. Boundary layer meshes 
-can easily be set up, polygonal meshes can be generated from triangular meshes, 
-and polygons can be included locally in existing meshes to improve mesh quality. 
-Meshing tools such as MSTK \cite{mstk} and the Computational Geometry Algorithms 
+polygonal mesh. First, we want to point the usefulness of using polygonal
+cells to discretize the domain of a problem. Such cell type presents a big 
+advantage over traditional cells type (triangles and rectangles): polygonal 
+cells allow for meshing flexibility. Boundary layer meshes can easily be set 
+up, polygonal meshes can be generated from triangular meshes, and polygons 
+can be included locally in existing meshes to improve mesh quality. Existing 
+meshing tools such as MSTK \cite{mstk} and the Computational Geometry Algorithms 
 Library \cite{cgal} may be employed to process polygonal meshes. For 
-example, the radiation transport code PDT and the CFD codes Fluent and OpenFoam 
+instance, the radiation transport code PDT and the CFD codes Fluent and OpenFoam 
 offer polygonal mesh and solver capabilities. The following features of polygonal
 cells are noteworthy:
 \begin{description}
   \item[Optimal partition of the space minimizing boundary/interior ratio]
   \item[Reduced number of unknowns:] To illustrate this, we assume
-    one unknown per vertex in every cell, which is standard for discontinuous
+    one unknown per vertex in every cell, which is standard for linear discontinuous
     finite element transport discretizations that perform well in the thick
     diffusive regime. In the 2D hexagonal example of \Cref{fig_hex_vs_tri},
     the number of unknowns would be six (one unknown per vertex). Using
@@ -59,7 +60,7 @@ equation is an important step in order to create a Diffusion Synthetic
 Acceleration scheme \cite{Adams2002,Wang2010}.
 In \Cref{sec_review}, we review different discretizations that can be used on
 polygonal cells to discretize the diffusion equation. In \Cref{sec_ip}, we
-introduce the PWLD finite elements and we use it to discretize the diffusion
+use the PWLD finite elements to discretize the diffusion
 equation. In \Cref{sec_amr}, we introduce the Adaptive Mesh Refinement
-technique (AMR). \Cref{sec_results}, we show some numerical results. We finish
+technique (AMR). In \Cref{sec_results}, we show some numerical results. We finish
 in \Cref{sec_conc} by giving our conclusions.

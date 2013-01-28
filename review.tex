@@ -1,28 +1,28 @@
 \section{Review of discretizations for polygonal meshes} \label{sec_review}
-In this section, we review discretizations that can be used on polygonal
+In this Section, we review different discretizations that can be used on polygonal
 meshes at the exception of the PWLD discretization which will be introduce in
 the next Section.
 \subsection{Palmer's method}
-Palmer's method is a node- or point-based method \cite{Palmer2001}. The method
-is second order. This discretization uses a finite volume approach: the
-particle balance is enforced by integrating the diffusion equation over a
-control volume. The control volume is the union of all corners surrounding the
-specified point. A corner is a quadrilateral with vertices at the point $p$,
-the cell-center $c$, and the midpoint of each of the edges $e$ that contain
-the point $p$. On a triangular grid, the scheme is equivalent to linear
-continuous finite elements with ``mass-matrix lumping. This method works for
-any polygonal cell even concave polygon. The main disadvantage of the method
-is that the system is not symmetric.
-\subsection{Mimetic finite difference}
-Mimetic methods, like mimetic finite difference, mimic properties of
+Palmer's method is a node- or point-based method \cite{Palmer2001}. This
+discretization is second order and uses a finite volume approach: the
+particle balance is enforced by integrating over a control volume. The control 
+volume is the union of all corners surrounding a vertex $p$. A corner is a
+quadrilateral defined by the vertex $p$, the cell-center $c$, and the midpoint
+of the edges $e$ that contain the point $p$. On a triangular grid, the
+scheme is equivalent to linear continuous finite elements with ``mass-matrix
+lumping''. This method works for any polygonal cell even concave polygon. The
+main disadvantage of Palmer's method is that the discretization of the
+diffusion equation does not lead to symmetric system in the general case.
+\subsection{Mimetic finite differences}
+Mimetic methods, such as mimetic finite differences (MFD), mimic properties of
 mathematical and physical models, such as: tensor and vector calculus,
 conservation laws, symmetry preservation, solution positivity and
 monotonicity, and asymptotic limits (e.g., diffusion limit), on polygonal and
-polyhedral meshes. The most important part of MFD is the definition of scalar
-product which should satisfy stability and consistency conditions
-\cite{Brezzi2005}. However, this scalar product is not unique. MFD is
-efficient event on concave polygons \cite{Kuznetsov2004}. MFD method is
-related to mixed finite elements.
+polyhedral meshes. The most important part of MFD is the definition of a scalar
+product which satisfies stability and consistency some conditions
+\cite{Brezzi2005}. However, this scalar product is not unique and therefore,
+multiple MFD methods exists. MFD is efficient even on concave polygons
+\cite{Kuznetsov2004}. MFD methods are related to mixed finite elements.
 
 %\red{An important (mimetic) property of operators div and $K\bn$ is expressed
 %  by integration by part formula:
@@ -91,13 +91,13 @@ related to mixed finite elements.
 %  \item define the discrete flux operator
 %\end{enumerate}}
 \subsection{Wachspress' rationale finite element}
-The disadvantages of this method is that it works only for convex cells and
-the basis function integrals must be done numerically \cite{Bailey2008a}.
-Before we introduce the basis function for a quadrilateral cell, we define:
+Before introducing the Wachspress' basis function on a quadrilateral cell, 
+we define $P_{1,2}(x,y)$ the polynomial defined by the points $(x_1,y_1)$ and
+$(x_2,y_2)$:
 \begin{equation}
   P_{1,2}(x,y) = (y-y_1) (x_2-x_1)-(x-x_1)(y_2-y_1).
 \end{equation}  
-The basis functions are given by:
+Therefore, Wachspress' basis functions are given by:
 \begin{align}
   &b_0(x,y) = k_0 P_{2,3}(x,y)P_{1,2}(x,y)/P_{4,5}(x,y),\\
   &b_1(x,y) = k_1 P_{0,3}(x,y)P_{2,3}(x,y)/P_{4,5}(x,y),\\
@@ -105,25 +105,25 @@ The basis functions are given by:
   &b_3(x,y) = k_3 P_{1,2}(x,y)P_{0,1}(x,y)/P_{4,5}(x,y),
 \end{align}
 where $k_i$ are chose such that $b_i(x_i,y_i)=1$. $(x_4,y_4)$ and $(x_5,y_5)$
-are the two points which are the intersection of the lines created by the edges of the
-quadrilaterals (see \Cref{fig_quadrilateral}).
+are the intersections of the prolongations of the edges 
+of the quadrilaterals (see \Cref{fig_quadrilateral}).
 \begin{figure}[H]
   \centering
   \includegraphics[width=5cm]{quadrilateral}
   \caption{Quadrilateral cell}
   \label{fig_quadrilateral}
 \end{figure}
-These two points uniquely defines a linear polynomial. It
-should be noted that the line defined does not pass through the quadrilateral
-and thus, there is no risk that the denominator equals zero (this is only true
-for convex quadrilateral). When the quadrilateral tends to a parallelogram,
-the points defining $P_{4,5}$ are moved to the infinity and the value of
-$P_{4,5}(x,y)$ with in $(x,y)$ in the cell tends to a constant. By definition
-this constant is chosen to be 1 for a parallelogram. For a trapezoid,
-$P_{4,5}$ is the line defined by the intersection of the lines generated by
-the two edges which are not parallel and parallel to the two parallel edges of
-the trapezoid. For arbitrary polygons, a non-trivial generalization is
-necessary \cite{Wachspress1975}.
+These two points uniquely defines a linear polynomial. It should be noted that 
+the line defined by $(x_4,y_4)$ and $(x_5,y_5)$ does not pass through the 
+quadrilateral and thus, the denominator cannot vanish (this is 
+only true for convex quadrilateral). When the quadrilateral tends to a 
+parallelogram, the points defining $P_{4,5}$ are moved to infinity and 
+$P_{4,5}(x,y)$ tends to a constant inside the quadrilateral. By definition, 
+this constant is chosen to be one for a parallelogram. For a trapezoid,
+$P_{4,5}(x,y)=0$ is the equation of the line parallel to the two parallel
+edges of the trapezoid which contains the intersection of the prolongations of
+the two non-parallel edges. For arbitrary polygons, a non-trivial 
+generalization is necessary \cite{Wachspress1975}.
 %\red{\cite{Bailey2008a} he disadvantage is that the basis function integrals must
 %be done numerically.
 %\red{\cite{Wachspress1975} $(r;q)_2|_3$ is the value at point 3 of a quadratic
@@ -175,70 +175,82 @@ necessary \cite{Wachspress1975}.
 %  exterior intersection points of these sides and at no other points.
 %A non-trivial generalization is necessary for polygons.} 
 \subsection{CFEM-based DFEM}
-This method is very similar to the PWLD discretization. The scheme is second
-order \cite{Warsa2008}. First, the polygonal cell is divided into simplexes
-that we will call sub-call. The simplexes are formed by filling the polygons
-with triangles without adding point (type 0) or by the vertices of the
-cell and the center of the cell (type 1) cf PWLD. Linear DFEM are built on the 
-triangles. If type 1 is used, CFEM-based DFEM is similar to PWLD but whereas
-PWLD eliminates the center unknown by setting it equal to a weighted average
-of the values at the vertexes, CFEM-based DFEM keeps the additional degree of
-freedom as an unknown. Therefore, additional degrees of freedom can be added
-to improve the numerical properties. The mass matrix $\bs{M}$ for a given cell
-composed of $N$ sub-cells is assembled:
+CFEM-based DFEM stands for Continuous Finite Elements-based Discontinuous
+Finite Elements. This method is very similar to the PieceWise Linear
+Discontinuous finite elements (PWLD) discretization (see \Cref{subsec_pwld}). 
+The scheme is second order \cite{Warsa2008}. The discretization is done by
+first dividing the cells into triangles that we call sub-cells. The sub-cells
+are formed by filling the polygons with triangles without adding point (type
+0) or by adding the centers of the cells as the vertices of the sub-cells
+(type 1). Linear DFEM are built on the triangles. Type 1 CFEM-based DFEM is
+similar to PWLD but whereas PWLD eliminates the center unknown by setting it
+to be the weighted average of the values at the vertexes, CFEM-based DFEM keeps 
+the additional degree of freedom as an unknown. The mass matrix 
+$\bs{M}$ for a given cell composed of $N$ sub-cells is assembled by looping
+over the sub-cell and for each sub-cell $n$:
 \begin{equation}
-  \sum_{n=1}^N \bs{M}_{t_n(u),t_n(v)} + \bs{M}_{n,u,v}, \textrm{ for }
-  u=1,2,3, v=1,2,3
+  \bs{M}_{t_n(u),t_n(v)} = \bs{M}_{t_n(u),t_n(v)} + \bs{M}_{n,u,v}, 
+  \textrm{ for }u=1,2,3,\ v=1,2,3
+  \label{mass_cfem}
 \end{equation}
-\blue{Loop over the sub-cell, and for each cell $n$:
-  \begin{equation}
-    \bs{M}_{t_n(u),t_n(v)} = \bs{M}_{n,u,v}
-  \end{equation}
-}
-where $\bs{M}_n$ is the mass matrix of the $n$ sub-cell and $t_n$ is indexing
-function which maps the index of the vertices of the sub-cells to the index of
-the vertices in the cell. The streaming matrix is given by:
+where $\bs{M}_n$ is the mass matrix of the $n^{th}$ sub-cell and $t_n$ is an 
+indexing function which maps the index of the vertices of the sub-cells to the 
+index of the vertices in the cell. The streaming matrix is given by a similar 
+equation:
 \begin{equation}
-  \sum_{n=1}^N \bs{L}_{t_n(u),t_n(v)} + \bs{L}_{n,u,v}, \textrm{ for }
-  u=1,2,3, v=1,2,3
+  \bs{L}_{t_n(u),t_n(v)} = \bs{L}_{t_n(u),t_n(v)} + \bs{L}_{n,u,v}, 
+  \textrm{ for }u=1,2,3,\ v=1,2,3
+  \label{stream_cfem}
 \end{equation}
-and the matrix $\bs{N}_{i,j}^{(k)} = \bs{n}_k \int_{\partial E_k} B_i(\br)
-B_j(\br) d\br$ is given by:
+and the mass matrix on the edge $k$, $\bs{N}_{i,j}^{(k)} = \bs{n}_k
+\int_{\partial E_k} b_i(\br) b_j(\br) d\br$, is given by:
 \begin{equation}
   \bs{N}_{t_n(u),t_n(v)}^{(f_n(l))} = \left\{
     \begin{aligned}
       & \bs{N}_{n,u,v}^{(l)}, & \textrm{ if }f_n(l)\neq 0\\
       & 0, & \textrm{ otherwise }
     \end{aligned}
-    \right.
-    \textrm{ for } l=1,2,3,u=1,2,3,v=1,2,3
+  \right.
+  \textrm{ for } l=1,2,3,u=1,2,3,v=1,2,3
 \end{equation}
-where $f_n(k)$ is an indexing function to map face $k$ of the subelement $n$,
-for $n=1,\hdots,N,$ to the faces of the polygon.
-\subsection{PWBLD}
-PWBLD stands for PieceWise Bi-Linear Discontinuous finite elements. This 
-discretization is very similar to the PWLD discretization that we explain
-in detail in the next Section. When using PWBLD, the convex polygonal cell is 
-divided on quadrilateral instead of triangular for PWLD \cite{Bailey2011}. On 
-these quadrilaterals, the basis functions are equivalent to bi-linear functions 
-on quadrilaterals. If the cell is quadrilateral, PWBLD finite elements are 
-identical to bi-linear discontinuous finite elements.
+where $f_n(l)$ is an indexing function to map face $l$ of the sub-cell $n$,
+for $n=1,\hdots,N,$ to the corresponding face of the polygon.
 \subsection{PWLC}
 PWLC stands for PieceWise Linear Continuous finite elements. It is a second
-order method \cite{Bailey2008}. Unlike Palmer's method, the diffusion equation
-discretized by PWLD produces a SPD matrix. The PWL function centered at vertex
-$j$ is given by:
+order method which when used to discretize the diffusion equation produces 
+a Symmetric Positive-Definite (SPD) matrix \cite{Bailey2008}. The PWL basis 
+function associated to $j^{th}$ vertex is given by:
 \begin{equation}
   b_j(\br) = t_j(\br) + \alpha_{c,j} t_c(\br)
 \end{equation}
-where the $t_j$ functions are standard linear functions defined triangle by
-triangle. For instance, $t_ j$ equals 1 at the $j^{th}$ vertex of the cell and
-0 at the $j-1^{th}$ and $j+1^{th}$ vertices. $t_c$ is the hat function which
+where the $t_j$ function is the standard linear functions defined on the
+triangle formed by the $j-1^{th}$, $j^{th}$, and $j+1^{th}$ vertices:
+$t_j$ equals 1 at the $j^{th}$ vertex of the cell and
+0 at the $j-1^{th}$ and $j+1^{th}$ vertices. $t_c$ is
 is equal to one at point $c=(x_c,y_c)$ and 0 at all the vertices, with $x_c =
-\sum_{i=0}^{N_v} \alpha_{c,i} x_i$, $y_c = \sum_{i=0}^{N_v} \alpha_{c,i} y_i$,
-and $\sum_{i=0}^{N_V} \alpha_{c,i} = 1$. PWLC is a second order method. When
-this discretization is applied to the diffusion equation, the system obtained
-is SPD.
-\subsection{PWLD}
+\sum_{i=0}^{N_V} \alpha_{c,i} x_i$, $y_c = \sum_{i=0}^{N_V} \alpha_{c,i} y_i$,
+and $\sum_{i=0}^{N_V} \alpha_{c,i} = 1$. The assembling of the mass and 
+streaming matrices is similar than the one of CFEM-based DFEM. The matrices
+associated to a given cell is assembled by looping over triangular sub-cells
+(see \Cref{subsec_pwld}).
+\subsection{PWLD} \label{subsec_pwld}
 PWLD uses similar basis functions than PWLC but they are defined only on a
-element.
+element. Like pointed out previously, PWLD is closely related to type 1
+CFEM-based DFEM. Both methods use sub-cells to build the mass matrix and the
+streaming matrix. However since for PWLD, the center unknown is eliminated,
+\cref{mass_cfem,stream_cfem} become:
+\begin{align}
+  \bs{M}_{t_n(u),t_n(v)} &= \bs{M}_{t_n(u),t_n(v)} + w_{n,u,v}\bs{M}_{n,u,v}, 
+  \bs{L}_{t_n(u),t_n(v)} &= \bs{L}_{t_n(u),t_n(v)} + w_{n,u,v} \bs{L}_{n,u,v}, 
+\end{align}
+for $u=1,2,3,\ v=1,2,3$. $w_{n,u,v}$ is a weighting function which is used to
+eliminate the extra unknown. The value of $w_{n,u,v}$ depends on
+$\alpha_{c,j}$.
+\subsection{PWBLD}
+PWBLD stands for PieceWise Bi-Linear Discontinuous finite elements. This 
+discretization is very similar to the PWLD discretization. When using PWBLD, 
+the convex polygonal cell is divided on quadrilateral sub-cells instead of
+triangular sub-cells for PWLD \cite{Bailey2011}. On these quadrilaterals, 
+the bi-linear basis functions are used. If the cell is 
+quadrilateral, PWBLD finite elements are identical to bi-linear discontinuous 
+finite elements.
