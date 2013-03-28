@@ -1,4 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction} \label{sec_intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This paper deals with spatial discretizations of the radiation diffusion equation on
+arbitrary polygonal grids, with and without adaptive mesh refinement. Radiation diffusion
+is an asymptotic limit of the radiation transport equation and can be written in the
+following form
+\begin{equation} \label{eq:radiation_diffusion}
+- \div  D \grad E + \sigma_a E = Q ,
+\end{equation}
+where $E$ is the radiation energy intensity, $D$ is a diffusion coefficient, $\sigma_a$ is 
+an apocity coefficient, and $Q$ is the source.
+
+Several spatial discretizations have been proposed to solve \eqt{eq:radiation_diffusion} on
+arbitrary polygons and polyhedra \cite{Wachspress,PalmerLLNL,Palmer2005,MorelHall,MorelShashkov,%
+BaileyAdams2008,KutnetsovMimetic}.
+
+
+
+
+
 In this paper, we are interested in solving the diffusion equation on a
 polygonal mesh. First, we want to point the usefulness of using polygonal
 cells to discretize the domain of a problem. Such cell type presents a big 
