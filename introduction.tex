@@ -2,19 +2,32 @@
 \section{Introduction} \label{sec_intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-This paper deals with spatial discretizations of the radiation diffusion equation on
-arbitrary polygonal grids, with and without adaptive mesh refinement. Radiation diffusion
-is an asymptotic limit of the radiation transport equation and can be written in the
-following form
+This paper deals with a discontinuous finite elemt spatial discretizations of the radiation 
+diffusion equation on arbitrary polygonal grids, with and without adaptive mesh refinement. 
+Radiation diffusion is an asymptotic limit of the radiation transport equation and can be 
+written in the following form:
 \begin{equation} \label{eq:radiation_diffusion}
 - \div  D \grad E + \sigma_a E = Q ,
 \end{equation}
 where $E$ is the radiation energy intensity, $D$ is a diffusion coefficient, $\sigma_a$ is 
-an apocity coefficient, and $Q$ is the source.
+an opacity coefficient, and $Q$ is the source.
 
 Several spatial discretizations have been proposed to solve \eqt{eq:radiation_diffusion} on
 arbitrary polygons and polyhedra \cite{Wachspress,PalmerLLNL,Palmer2005,MorelHall,MorelShashkov,%
-BaileyAdams2008,KutnetsovMimetic}.
+BaileyAdams2008,KutnetsovMimetic}. 
+
+Wachspress \cite{Wachspress} developed a family of rational polynomial functions that can be employed
+as basis functions in a finite element code that uses polygonal/polyhedral grids. This yields
+symmetric positive-definite (SPD) matrices but (i) the finite element integrals must be carried out 
+numerically to some accuracy and (ii) the Jacobian of the transformation becomes zero on degenerate 
+cells (such as the ones shown on \fig{fig:amr_schematics}. Palmer \cite{PalmerLLNL,Palmer2005}
+proposed a node-based finite volume method that enforces particle balance over dual cells,
+where a dual cell is defined as the union of all corners surrounding a given vertex $p$ and where  
+a corner is a quadrilateral defined by the vertex $p$, the cell-center, and the midpoint
+of the edges that contain the point $p$. On a triangular grid, Palmer's scheme is equivalent 
+to linear continuous finite elements with ``mass-matrix lumping''. Palmer's method is 
+second-order accurate but discretization of the diffusion equation does not yield SPD matrices.
+
 
 
 
