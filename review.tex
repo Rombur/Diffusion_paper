@@ -1,9 +1,14 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Review of discretizations for polygonal meshes} \label{sec_review}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this Section, we review different discretizations that can be used on polygonal
 meshes at the exception of the PWLD discretization which will be introduce in
 the next Section.
+
+%-----------------------------------------------------------
 \subsection{Palmer's method}
+%-----------------------------------------------------------
 
 Palmer's method is a node- or point-based method \cite{Palmer2001}. This
 discretization is second order and uses a finite volume approach: the
@@ -15,7 +20,10 @@ scheme is equivalent to linear continuous finite elements with ``mass-matrix
 lumping''. This method works for any polygonal cell even concave polygon. The
 main disadvantage of Palmer's method is that the discretization of the
 diffusion equation does not lead to symmetric system in the general case.
+
+%-----------------------------------------------------------
 \subsection{Mimetic finite differences}
+%-----------------------------------------------------------
 Mimetic methods, such as mimetic finite differences (MFD), mimic properties of
 mathematical and physical models, such as: tensor and vector calculus,
 conservation laws, symmetry preservation, solution positivity and
@@ -92,7 +100,10 @@ multiple MFD methods exists. MFD is efficient even on concave polygons
 %  \item discretize the divergence operator
 %  \item define the discrete flux operator
 %\end{enumerate}}
+
+%-----------------------------------------------------------
 \subsection{Wachspress' rationale finite element}
+%-----------------------------------------------------------
 Before introducing the Wachspress' basis function on a quadrilateral cell, 
 we define $P_{1,2}(x,y)$ the polynomial defined by the points $(x_1,y_1)$ and
 $(x_2,y_2)$:
@@ -176,7 +187,10 @@ generalization is necessary \cite{Wachspress1975}.
 %  as the lined that intersects the sides of the quadrilateral at all the
 %  exterior intersection points of these sides and at no other points.
 %A non-trivial generalization is necessary for polygons.} 
+
+%-----------------------------------------------------------
 \subsection{CFEM-based DFEM}
+%-----------------------------------------------------------
 CFEM-based DFEM stands for Continuous Finite Elements-based Discontinuous
 Finite Elements. This method is very similar to the PieceWise Linear
 Discontinuous finite elements (PWLD) discretization (see \Cref{subsec_pwld}). 
@@ -217,7 +231,10 @@ and the mass matrix on the edge $k$, $\bs{N}_{i,j}^{(k)} = \bs{n}_k
 \end{equation}
 where $f_n(l)$ is an indexing function to map face $l$ of the sub-cell $n$,
 for $n=1,\hdots,N,$ to the corresponding face of the polygon.
+
+%-----------------------------------------------------------
 \subsection{PWLC}
+%-----------------------------------------------------------
 PWLC stands for PieceWise Linear Continuous finite elements. It is a second
 order method which when used to discretize the diffusion equation produces 
 a Symmetric Positive-Definite (SPD) matrix \cite{Bailey2008}. The PWL basis 
@@ -248,7 +265,10 @@ streaming matrix. However since for PWLD, the center unknown is eliminated,
 for $u=1,2,3,\ v=1,2,3$. $w_{n,u,v}$ is a weighting function which is used to
 eliminate the extra unknown. The value of $w_{n,u,v}$ depends on
 $\alpha_{c,j}$.
+
+%-----------------------------------------------------------
 \subsection{PWBLD}
+%-----------------------------------------------------------
 PWBLD stands for PieceWise Bi-Linear Discontinuous finite elements. This 
 discretization is very similar to the PWLD discretization. When using PWBLD, 
 the convex polygonal cell is divided on quadrilateral sub-cells instead of
