@@ -13,21 +13,39 @@ where $E$ is the radiation energy intensity, $D$ is a diffusion coefficient, $\s
 an opacity coefficient, and $Q$ is the source.
 
 Several spatial discretizations have been proposed to solve \eqt{eq:radiation_diffusion} on
-arbitrary polygons (2D) and polyhedra (3D) \cite{Wachspress,PalmerLLNL,Palmer2005,MorelHall,MorelShashkov,%
-BaileyAdams2008,KutnetsovMimetic}. 
+arbitrary polygons (2D) and polyhedra (3D) \cite{Wachspress,MorelDendyHallWhite1992,
+PalmerLLNL,Palmer2005,MorelHallShashkov,BaileyAdams2008,KutnetsovMimetic}. 
 
 Wachspress \cite{Wachspress} developed a family of rational polynomial functions that can be employed
 as basis functions in a finite element method on polygonal/polyhedral grids. This yields
 symmetric positive-definite (SPD) matrices but (i) the finite element integrals must be carried out 
 numerically and (ii) the Jacobian of the transformation becomes zero on degenerate cells 
-(such as the ones shown on \fig{fig:amr_schematics}). Palmer \cite{PalmerLLNL,Palmer2005}
-proposed a node-based finite volume method that enforces particle balance over dual cells,
-where a dual cell is defined as the union of all corners surrounding a given vertex $p$ and where  
-a corner is a quadrilateral defined by vertex $p$, the cell center, and the midpoint
+(such as the ones shown on \fig{fig:amr_schematics}). 
+%
+Morel et al. \cite{MorelDendyHallWhite1992} introduced a cell-centered finite volume scheme 
+for arbitrary quadrilateral meshes. Their scheme was seocnd-order accurate and yielded back a 
+standard five-point stencil on orthogonal grids, but the diffusion was asymmetric and cell-edge unknowns
+were added in addition to cell-center unknowns.
+%
+Palmer \cite{PalmerLLNL,Palmer2005} proposed a node-based finite volume method 
+that enforces particle balance over dual cells, where a dual cell is defined as 
+the union of all corners surrounding a given vertex $p$ and where  a corner 
+is a quadrilateral defined by vertex $p$, the cell center, and the midpoint
 of the edges that contain vertex $p$. On a triangular grid, Palmer's scheme is equivalent 
 to linear continuous finite elements with ``mass-matrix lumping''. The method is 
 second-order accurate but the discretization of the diffusion equation using Palmer's method 
 does not result in SPD matrices.
+%
+Mimetic methods, such as the mimetic finite differences (MFD), mimic properties of
+mathematical and physical models, such as: tensor and vector calculus,
+conservation laws, symmetry preservation, solution positivity and
+monotonicity, and asymptotic limits (e.g., diffusion limit), on polygonal and
+polyhedral meshes. The most important part of MFD is the definition of a scalar
+product which satisfies stability and consistency some conditions
+\cite{Brezzi2005}. However, this scalar product is not unique and therefore,
+multiple MFD methods exists. MFD is efficient even on concave polygons
+\cite{Kuznetsov2004}. MFD methods are related to mixed finite elements.
+
 
 
 
