@@ -2,7 +2,7 @@ clear all; close all; clc;
 
 L=1;
 n=100;
-h=2*L/n;
+h=L/n;
 xi=linspace(-h,L+h,n+1);
 eta=xi;
 
