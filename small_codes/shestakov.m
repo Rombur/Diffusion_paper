@@ -6,7 +6,7 @@ clear all; close all; clc;
 % gives the most random mesh. A value of a = .5 gives a rectangular
 % mesh. Boomerang zones are allowed but bowties are not allowed.
 
-nc = 2;
+nc = 3;
 a  = 0.5;
 L = 1;
 rm = L;
@@ -14,14 +14,22 @@ zm = L;
 
 % allocate memory
 nm = 2^nc + 1
+ind = nm-1;
 r=zeros(nm,nm);
 z=zeros(nm,nm);
 % initialize 4 corners
-r(1,1)=0;     z(1,1)=0;
-r(end,end)=L; z(end,end)=L;
+% r(1,1)=0;     z(1,1)=0;
+% r(end,end)=L; z(end,end)=L;
+for i = 0:1
+    k = 1 + i*ind;
+    for j = 0:1
+        l = 1 + j*ind;
+        r(k,l) = L*(1-i);
+        z(k,l) = L*j;
+    end
+end
 
 % Fill in the rest of the points
-ind = nm-1;
 for nl = 0:nc-1
     nn = 2^nl;
     inc = ind/nn;
@@ -120,8 +128,8 @@ r
 
 z
 
-for k=1:nm
-    for l=1:nm
-        fprintf('%d %d %d %d %g %g \n',k,l,k,l,r(k,l),z(k,l));
-    end
-end
+% for k=1:nm
+%     for l=1:nm
+%         fprintf('%d %d %d %d %g %g \n',k,l,k,l,r(k,l),z(k,l));
+%     end
+% end
