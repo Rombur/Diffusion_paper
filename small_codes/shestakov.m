@@ -6,8 +6,8 @@ clear all; close all; clc;
 % gives the most random mesh. A value of a = .5 gives a rectangular
 % mesh. Boomerang zones are allowed but bowties are not allowed.
 
-nc = 3;
-a  = 0.5;
+nc = 8;
+a  = 0.25;
 L = 1;
 rm = L;
 zm = L;
@@ -125,7 +125,6 @@ for nl = 0:nc-1
 end
 
 r
-
 z
 
 % for k=1:nm
@@ -133,3 +132,7 @@ z
 %         fprintf('%d %d %d %d %g %g \n',k,l,k,l,r(k,l),z(k,l));
 %     end
 % end
+
+figure
+surf(r,z,ones(nm,nm))
+view(0,-90)
