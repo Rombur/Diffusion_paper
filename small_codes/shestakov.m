@@ -2,12 +2,28 @@ clear all; close all; clc;
 
 % This routine generates an nm by nm mesh, commonly known as a
 % Shestakov mesh, with 0 < r < rm and 0 < z < zm. The randomness
-% parameter is denoted by "a", where 0 < a < 0.5. A value of a = 0
-% gives the most random mesh. A value of a = .5 gives a rectangular
-% mesh. Boomerang zones are allowed but bowties are not allowed.
+% is controlled by parameter "a", where 0 <= a <= 0.5. A value of 
+% a = 0.5 gives a rectangular % mesh. Boomerang zones are allowed 
+% but bowties are not allowed.
+%
+% Matlab version by Jean C. Ragusa, Texas A University, April 1, 2013
+%
+% based on the original Fortran program by Alek Sheshakov; that program 
+% is found in: Nuclear Science & Engineering, Vol 105, pp.88-104 (1990),
+% "Test Problems in Radiative Transfer Calculations", by A. Shestakov, 
+% D. Kershaw, and G. Zimmerman
+%
+% Many thanks to Michael Hall (LANL) for providing a copy of the F77 
+% program
+%
+% issues/comments about the matlab code: send an email to
+% jean.ragusa@tamu.edu
 
-nc = 8;
+% number of subdivisions of the original rectangle
+nc = 6;
+% random parameter
 a  = 0.25;
+% rectangle dimensions
 L = 1;
 rm = L;
 zm = L;
@@ -17,9 +33,8 @@ nm = 2^nc + 1
 ind = nm-1;
 r=zeros(nm,nm);
 z=zeros(nm,nm);
+
 % initialize 4 corners
-% r(1,1)=0;     z(1,1)=0;
-% r(end,end)=L; z(end,end)=L;
 for i = 0:1
     k = 1 + i*ind;
     for j = 0:1
@@ -29,7 +44,7 @@ for i = 0:1
     end
 end
 
-% Fill in the rest of the points
+% fill in the rest of the points
 for nl = 0:nc-1
     nn = 2^nl;
     inc = ind/nn;
@@ -68,7 +83,7 @@ for nl = 0:nc-1
             z2 = z(k2,l1);
             z3 = z(k2,l2);
             z4 = z(k1,l2);
-            % Check for boomerang zones
+            % check for boomerang zones
             det2 = (r2-r1)*(z3-z2)-(r3-r2)*(z2-z1);
             det3 = (r3-r2)*(z4-z3)-(r4-r3)*(z3-z2);
             det4 = (r4-r3)*(z1-z4)-(r1-r4)*(z4-z3);
@@ -124,15 +139,7 @@ for nl = 0:nc-1
     end
 end
 
-r
-z
-
-% for k=1:nm
-%     for l=1:nm
-%         fprintf('%d %d %d %d %g %g \n',k,l,k,l,r(k,l),z(k,l));
-%     end
-% end
-
-figure
+% plotting in matlab
+figure(1)
 surf(r,z,ones(nm,nm))
 view(0,-90)
