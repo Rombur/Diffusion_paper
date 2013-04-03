@@ -24,8 +24,8 @@ numerically and (ii) the Jacobian of the transformation becomes zero on degenera
 %
 Morel et al. \cite{MorelDendyHallWhite1992} introduced a cell-centered finite volume scheme 
 for arbitrary quadrilateral meshes. Their scheme was second-order accurate and yielded back a 
-standard five-point stencil on orthogonal grids, but the diffusion was asymmetric and cell-edge unknowns
-were added in addition to cell-center unknowns.
+standard five-point stencil on orthogonal grids, but the diffusion operator was asymmetric 
+and cell-edge unknowns were added in addition to cell-center unknowns.
 %
 Palmer \cite{PalmerLLNL,Palmer2005} proposed a node-based finite volume method 
 that enforces particle balance over dual cells, where a dual cell is defined as 
@@ -36,8 +36,21 @@ to linear continuous finite elements with ``mass-matrix lumping''. The method is
 second-order accurate but the discretization of the diffusion equation using Palmer's method 
 does not result in SPD matrices.
 %
-Mimetic methods, such as the mimetic finite differences (MFD), mimic properties of
-mathematical and physical models, such as: tensor and vector calculus,
+Mimetic finite difference methods create discrete analog of vector and tensor
+calculus in order to accurately approximate the original differential operators;
+see, e.g., \cite{HymanMorelShashkovSteinberg2002}.
+Mimetic methods preserve important properties of the differential operators such 
+as symmetry, positivity, monotonicity, asymptotic limits, and identities pertaining 
+to tensor and vector calculus. Mimetic methods can also be viewed as mixed hybrid 
+finite element formulations with specific spatial quadratures.  
+Mimetic finite difference methods have been applied to the diffusion equation on 
+
+conformal quadrilateral \cite{HymanShashkovSteinberg1997, ShashkovSteinberg1996,MorelRobertsShashkov1998} 
+and hexahedral \cite{???} grids, locally refined grids \cite{LipnikovMorelShashkov2004}, and
+arbitrary polygonal grids \cote{LipnikovShashkovSvyatskiy2006,LipnikovShashkov2010,Kutnetsov???,Brezzi2005}.
+
+
+ , scalar and vector inner products, such as: ,
 conservation laws, symmetry preservation, solution positivity and
 monotonicity, and asymptotic limits (e.g., diffusion limit), on polygonal and
 polyhedral meshes. The most important part of MFD is the definition of a scalar
