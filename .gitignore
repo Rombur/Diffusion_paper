@@ -12,4 +12,6 @@ pwld_uniform
 z_mesh
 *.asv
 *old_fortran.txt
-
+*.dvi
+*.zip
+*.spl
