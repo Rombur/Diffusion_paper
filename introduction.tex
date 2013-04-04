@@ -13,8 +13,8 @@ where $E$ is the radiation energy intensity, $D$ is a diffusion coefficient, $\s
 an opacity coefficient, and $Q$ is the source.
 
 Several spatial discretizations have been proposed to solve \eqt{eq:radiation_diffusion} on
-arbitrary polygons (2D) and polyhedra (3D) \cite{Wachspress,MorelDendyHallWhite1992,
-PalmerLLNL,Palmer2005,MorelHallShashkov,BaileyAdams2008,KutnetsovMimetic}. 
+arbitrary polygons (2D) and polyhedra (3D) \cite{Wachspress,Kuznetsov2004,Palmer2005,Brezzi2005,
+LipnikovShashkovSvyatskiy2006,BaileyAdams2008}. 
 
 Wachspress \cite{Wachspress} developed a family of rational polynomial functions that can be employed
 as basis functions in a finite element method on polygonal/polyhedral grids. This yields
@@ -22,12 +22,12 @@ symmetric positive-definite (SPD) matrices but (i) the finite element integrals 
 numerically and (ii) the Jacobian of the transformation becomes zero on degenerate cells 
 (such as the ones shown on \fig{fig:amr_schematics}). 
 %
-Morel et al. \cite{MorelDendyHallWhite1992} introduced a cell-centered finite volume scheme 
-for arbitrary quadrilateral meshes. Their scheme was second-order accurate and yielded back a 
-standard five-point stencil on orthogonal grids, but the diffusion operator was asymmetric 
-and cell-edge unknowns were added in addition to cell-center unknowns.
-%
-Palmer \cite{PalmerLLNL,Palmer2005} proposed a node-based finite volume method 
+%Morel et al. \cite{MorelDendyHallWhite1992} introduced a cell-centered finite volume scheme 
+%for arbitrary quadrilateral meshes. Their scheme was second-order accurate and yielded back a 
+%standard five-point stencil on orthogonal grids, but the diffusion operator was asymmetric 
+%and cell-edge unknowns were added in addition to cell-center unknowns.
+%%
+Palmer \cite{Palmer2005,PalmerLLNL} proposed a node-based finite volume method 
 that enforces particle balance over dual cells, where a dual cell is defined as 
 the union of all corners surrounding a given vertex $p$ and where  a corner 
 is a quadrilateral defined by vertex $p$, the cell center, and the midpoint
@@ -43,21 +43,22 @@ Mimetic methods preserve important properties of the differential operators such
 as symmetry, positivity, monotonicity, asymptotic limits, and identities pertaining 
 to tensor and vector calculus. Mimetic methods can also be viewed as mixed hybrid 
 finite element formulations with specific spatial quadratures.  
-Mimetic finite difference methods have been applied to the diffusion equation on 
-
-conformal quadrilateral \cite{HymanShashkovSteinberg1997, ShashkovSteinberg1996,MorelRobertsShashkov1998} 
-and hexahedral \cite{???} grids, locally refined grids \cite{LipnikovMorelShashkov2004}, and
-arbitrary polygonal grids \cote{LipnikovShashkovSvyatskiy2006,LipnikovShashkov2010,Kutnetsov???,Brezzi2005}.
-
-
- , scalar and vector inner products, such as: ,
-conservation laws, symmetry preservation, solution positivity and
-monotonicity, and asymptotic limits (e.g., diffusion limit), on polygonal and
-polyhedral meshes. The most important part of MFD is the definition of a scalar
-product which satisfies stability and consistency some conditions
-\cite{Brezzi2005}. However, this scalar product is not unique and therefore,
-multiple MFD methods exists. MFD is efficient even on concave polygons
-\cite{Kuznetsov2004}. MFD methods are related to mixed finite elements.
+In addition to quadrilateral and hexahedral meshes (see, e.g., 
+\cite{MorelRobertsShashkov1998,MorelHallShashkov2001}, mimetic finite difference 
+methods have recently been applied to the diffusion equation on arbitrary polygonal 
+grids \cite{Kuznetsov2004,Brezzi2005,LipnikovShashkovSvyatskiy2006,LipnikovShashkov2010}.
+%conformal quadrilateral \cite{HymanShashkovSteinberg1997, ShashkovSteinberg1996,MorelRobertsShashkov1998} 
+%and hexahedral \cite{MorelHallShashkov2001} grids, locally refined grids \cite{LipnikovMorelShashkov2004}, and
+%arbitrary polygonal grids \cote{Kuznetsov2004,Brezzi2005,LipnikovShashkovSvyatskiy2006,LipnikovShashkov2010}.
+%
+%, scalar and vector inner products, such as: ,
+%conservation laws, symmetry preservation, solution positivity and
+%monotonicity, and asymptotic limits (e.g., diffusion limit), on polygonal and
+%polyhedral meshes. The most important part of MFD is the definition of a scalar
+%product which satisfies stability and consistency some conditions
+%\cite{Brezzi2005}. However, this scalar product is not unique and therefore,
+%multiple MFD methods exists. MFD is efficient even on concave polygons
+%\cite{Kuznetsov2004}. MFD methods are related to mixed finite elements.
 
 
 
