@@ -15,8 +15,9 @@ A=[0 0]; B=[1 0]; C=[1 1]; D=[0.5 h]; E=[0 1];
 M=(A+B+C+D+E)/5
 
 % pick grid
-xx=linspace(0,1,233);
-yy=linspace(0,max([1 h]),233);
+n=50
+xx=linspace(0,1,n);
+yy=linspace(0,max([1 h]),n);
 
 for i=1:length(xx)
     x=xx(i);
@@ -30,33 +31,33 @@ for i=1:length(xx)
         zM(i,j)=f_M(M,h,x,y);
     end
 end
-i=0;
+i=0;con=false;
 i=i+1;figure(i)
-contour(xx,yy,zA',50)
+if(con),contour(xx,yy,zA',50);else,surf(xx,yy,zA');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-contour(xx,yy,zB',50)
+if(con),contour(xx,yy,zB',50);else,surf(xx,yy,zB');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-contour(xx,yy,zC',50)
+if(con),contour(xx,yy,zC',50);else,surf(xx,yy,zC');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-contour(xx,yy,zE',50)
+if(con),contour(xx,yy,zE',50);else,surf(xx,yy,zE');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-contour(xx,yy,zD',50)
+if(con),contour(xx,yy,zD',50);else,surf(xx,yy,zD');end
+xlabel('x');ylabel('y');
 
-xlabel('x');ylabel('y');
 i=i+1;figure(i)
-contour(xx,yy,zM',50)
+if(con),contour(xx,yy,zM',50);else,surf(xx,yy,zM');end
 xlabel('x');ylabel('y');
 
 i=i+1;figure(i)
 % surfc(xx,yy,(zA+zM/5)')
-contour(xx,yy,(zA+zM/5)',50)
+if(con),contour(xx,yy,(zA+zM/5)',50);else,surf(xx,yy,(zA+zM/5)');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-contour(xx,yy,(zD+zM/5)',50)
+if(con),contour(xx,yy,(zD+zM/5)',50);else,surf(xx,yy,(zD+zM/5)');end
 xlabel('x');ylabel('y');
 % i=i+1;figure(i)
 % contour3(xx,yy,(zA+zM/5)',100)
@@ -158,7 +159,7 @@ s=ym/xm;
 if(y>0&y-s*x<0&y-s*xm/(1-xm)*(1-x)<0)
     out=-(y-s*x)/s;
 elseif(x>0&y-s*xm/(1-xm)*(1-x)>0&y-(ym-1)/(xm-1)*(x-1)-1<0)
-    out=(x-xm)/(1-xm);
+    out=-(y-(ym-1)/(xm-1)*(x-1)-1);
 else
     out=0;
 end
@@ -197,9 +198,9 @@ function out=f_D(M,h,x,y)
 xm=M(1);ym=M(2);
 s=ym/xm;
 if(x<=0.5&-y+2*(h-1)*x+1>0&y-s/ym*(ym-1)*x-1>0)
-    out=(-y+2*(h-1)*x+1)/(h-ym);
+    out=(y-s/ym*(ym-1)*x-1)/(h-ym);
 elseif(x>0.5 &-y+2*(1-h)*x+2*h-1>0&y-(ym-1)/(xm-1)*(x-1)-1>0)
-    out=(-y+2*(1-h)*x+2*h-1)/(h-ym);
+    out=(y-(ym-1)/(xm-1)*(x-1)-1)/(h-ym);
 else
     out=0;
 end
