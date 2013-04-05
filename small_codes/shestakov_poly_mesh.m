@@ -2,7 +2,7 @@ clear all; close all; clc;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % number of subdivisions of the original rectangle
-nc = 6;
+nc = 8;
 % random parameter
 a  = 0.25;
 % rectangle dimensions
