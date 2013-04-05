@@ -49,6 +49,7 @@
 \usepackage{subfigure}
 %\usepackage{subfig}
 
+\usepackage{color}
 %% or use the graphicx package for more complicated commands
 \usepackage{graphicx}
 %% or use the epsfig package if you prefer to use the old commands
@@ -139,6 +140,7 @@
 \renewcommand{\[}{\left[}
 \renewcommand{\]}{\right]}
 
+\newcommand{\tcr}[1]{\textcolor{red}{#1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %   BEGIN DOCUMENT
@@ -226,6 +228,15 @@ aaaa
 \section{Introduction} \label{sec:intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\red{Make sure the following is expressed somewhere:\\
+In this
+research, we focus on using PWLD to discretize the diffusion equation. The
+PWLD discretization employs discontinuous finite elements and has been used to
+discretize the transport equation. Using it to discretize the diffusion
+equation is an important step in order to create a Diffusion Synthetic
+Acceleration scheme \cite{Adams2002,Wang2010}.
+}
 
 This paper deals with a discontinuous finite element spatial discretizations of the radiation 
 diffusion equation on arbitrary polygonal grids, with and without adaptive mesh refinement. 
@@ -359,8 +370,8 @@ resolution.  The following features of polygonal cells are noteworthy:
 	polygons/polyhedra. Therefore, such a grid can easily be split by cut planes, for 
 	instance. 
   \item The notion of ``hanging nodes'' for locally refined /adapted meshed is no longer needed.
-	For example, \figf{fig:amr1} shows two quadrilateral elements before local refinement; on
-	\figf{fig:amr2}, one of the two cells has been refined. The un-refined cell is now viewed as a
+	For example, \fig{fig:amr1} shows two quadrilateral elements before local refinement; on
+	\fig{fig:amr2}, one of the two cells has been refined. The un-refined cell is now viewed as a
 	pentagon.
 \end{itemize}
 
@@ -416,17 +427,21 @@ triangular subcells; in such a case, the number of basis functions
 would be $N_V+1$ (for the $N_V$ vertices and the cell center). In the
 piecewise linear representation, the unknowns are only located at the cell 
 vertices and the cell center point is only used to define the basis functions.
-
-Put figures with PWL contour plots in a pentagon and in the degenerate pentagon.
-
+\fig{fig:pentagons} presents two simple examples of polygonal cells: a 
+pentagon and a degenerated pentagon, the later is typically obtained
+during local mesh adaptation (see also \fig{fig:amr2}).
+The isolines of the piecewise linear basis functions for vertex $D$ and
+$E$ are graphed in \fig{fig:pwl_pentagon} for the regular pentagon
+and in \fig{fig:pwl_degen_pentagon} for the degenerate pentagon as an example.
+%
 \begin{figure}[!hbtp]
 \centering
 \includegraphics[scale=0.77]{pentagons.png}
 \label{fig:pentagons}
-\caption{Non-degenerate pentagon and degenerate pentagonal cells}
+\caption{Non-degenerate and degenerate pentagonal cells}
 \end{figure}
-
-
+%
+%
 \begin{figure}[!hbtp]
 \centering
 \subfigure[Basis function for Point D]{
@@ -440,7 +455,7 @@ Put figures with PWL contour plots in a pentagon and in the degenerate pentagon.
 \caption{PWL basis functions for a non-degenerate pentagon}
 \label{fig:pwl_pentagon}
 \end{figure}
-
+%
 \begin{figure}[!hbtp]
 \centering
 \subfigure[Basis function for Point D]{
@@ -455,12 +470,6 @@ Put figures with PWL contour plots in a pentagon and in the degenerate pentagon.
 \label{fig:pwl_degen_pentagon}
 \end{figure}
 
-In this
-research, we focus on using PWLD to discretize the diffusion equation. The
-PWLD discretization employs discontinuous finite elements and has been used to
-discretize the transport equation. Using it to discretize the diffusion
-equation is an important step in order to create a Diffusion Synthetic
-Acceleration scheme \cite{Adams2002,Wang2010}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -473,6 +482,112 @@ Acceleration scheme \cite{Adams2002,Wang2010}.
 \subsection{SIP}
 %-----------------------------------------------------------
 
+The discretization of the diffusion equation using discontinuous finite
+elements is not as straightforward as it is when using continuous finite
+elements. To discretize the diffusion equation with discontinuous finite elements, 
+we apply the interior penalty method \cite{Kanschat2007}:
+\begin{equation}
+  -\bn D \bn \phi + \Sigma_a \phi = Q_0\ \textrm{ for } \br \in \mc{D},
+\end{equation}
+\begin{equation}
+  \frac{1}{4}\phi - \frac{1}{2} D \partial_n \phi =0\ \textrm{ for } \br \in
+  \partial \mc{D}^d,
+\end{equation}
+and
+\begin{equation}
+  -D \partial_n \phi = J^{inc}\ \textrm{ for } \br \in \partial \mc{D}^n,
+\end{equation}
+where $D$ is the diffusion coefficient, $\phi$ is the scalar flux, $\Sigma_a$
+is the absorption cross section, $Q_0$ is a volumetric source, $J^{inc}$ is an
+incoming current, $\mc{D}$ is the domain, $\partial \mc{D}^d$ is the boundary 
+where Dirichlet conditions are applied, and $\partial \mc{D}^n$ is the boundary 
+where Neumann conditions are applied.\\ 
+After symmetrization, we get the SPD equation:
+\begin{equation}
+  a(\tilde{\phi},b) = l(b),
+\end{equation}
+where:
+\begin{equation}
+  \begin{split}
+    a (\tilde{\phi},b) =& \(\Sigma_a \tilde{\phi},b\)_{\mc{D}} + 
+    \(D\bn\tilde{\phi},\bn b\)_{\mc{D}} +
+    (\kappa_e\ldb\tilde{\phi}\rdb,\ldb b \rdb)_{E_h^i}\\
+    &+ \(\ldb\tilde{\phi}\rdb,\llb D\partial_n b \rrb\)_{E_h^i}+ \(\llb D
+    \partial_n \tilde{\phi}\rrb,\ldb b \rdb\)_{E_h^i}\\
+    &+ \(\kappa_e \tilde{\phi}, b\)_{\partial \mc{D}^d}
+    -\frac{1}{2}\(\tilde{\phi},D\partial_n b\)_{\partial \mc{D}^d}
+    -\frac{1}{2}\(D\partial_n\tilde{\phi},b\)_{\partial \mc{D}^d}
+  \end{split}
+\end{equation}
+and:
+\begin{equation}
+  l(b) = (Q_0,b)_{\mc{D}} + (J^{inc},b)_{\partial
+  \mc{D}^r},
+\end{equation}
+with $\tilde{\phi}=(\phi_1 b_1,\hdots, \phi_N b_N)^T$, $b = (b_1,\hdots,b_N)$,
+$b_i \in W_{\mc{D}}^h$ $\forall i \in (1,\hdots,N)$,
+the mesh $\mc{T}_h$ is used to discretize $\mc{D}$ into nonoverlapping linear
+elements $K$, such that the union of the elements fully covers $\mc{D}$. The
+finite dimensional polynomial space is $W_{\mc{D}}^h = \{f \in L^2(\mc{D});
+f|_K \in V_p(K), \forall K \in \mc{T}_h$\}, where $V_p(K)$ is the space of
+polynomials of degree up to $p$ on element $K$; the set of interior is $E_h^i
+= \cup _{K_1,K_2\in \mc{T}_h}(\partial K_1 \cap \partial K_2)$. We also
+define:
+\begin{align}
+  \ldb \phi \rdb &= \phi^+ - \phi^-,\\
+  \llb \phi \rrb &=  \frac{\phi^++\phi^-}{2},
+\end{align}
+with $\phi^{\pm} = \lim_{s\rightarrow 0^{\pm}} \phi(\br+s \bs{n}_e)$, where
+$\bs{n}_e$ is the normal unit vector associated with an edge $e$. On the boundary, 
+the normal vector has to be oriented outward whereas the orientation on an
+interior edge is arbitrary.\\
+The penalty parameter $\kappa_e$ is given:
+\begin{equation}
+  \kappa_e = \left\{
+    \begin{aligned}
+      &\frac{c(p^+)}{2}\frac{D^+}{h_{\bot}^+}+\frac{c(p^-)}{2}
+      \frac{D^-}{h_{\bot}^-} & \textrm{ on interior edges, i.e., } e \in
+      E_h^i,\\
+      & c(p)\frac{D}{h_{\bot}} & \textrm{ on boundary edges, i.e., } e\in
+      \partial \mc{D},
+    \end{aligned}
+    \right.
+\end{equation}
+where $c(p) =Cp(p+1)$, $C$ is a constant (we used $C=2$), $p$ is the
+polynomial order,  and $h_{\bot}$ is the length of the cell in the direction 
+orthogonal to edge $e$. The + and - symbols represent the values on either 
+side of an edge. On triangular cells, $h_{\bot}$ is $\frac{2A}{L_e}$ where $A$
+is the area of the triangle and $L_e$ is the length of the edge $e$. However
+when the cells are not triangular, there is no simple simple way to compute
+$h_{\bot}$. To simplify this, we assume that the polygonal cells are not too
+far from being regular polygonal cells. In such cases, if the cell has an even
+number of edges, the orthogonal length equals two times the apothem, i.e., two
+times the segment between the midpoint of a side of the polygon and the center
+of this polygon $\(\textrm{apothem}=2\times
+\frac{\textrm{area}}{\textrm{perimeter}}\)$. If the cell has an odd number of
+edges, the orthogonal length is given by the apothem plus the circumradius,
+i.e., the radius of the circle circumscribed to the polygon
+$\(\textrm{circumradius}=\sqrt{\frac{2\times\textrm{area}}{V \sin
+\(\frac{2\pi}{N_V}\)}}\)$. Therefore, $h_{\bot}$ is given by
+\tbl{tab:ortho_length}.
+\begin{table}[!htbp]
+  \begin{centering}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      Number of edges & 3 & 4 & $> 4$ and even & $>4$ and odd \\
+      \hline
+      $h_{\bot}$ & $2\times \frac{\textrm{area}}{L_e}$ &
+      $\frac{\textrm{area}}{L_e}$ & $4\times
+      \frac{\textrm{area}}{\textrm{perimeter}}$ &
+      $2\times \frac{\textrm{area}}{\textrm{perimeter}} +
+      \sqrt{\frac{2\times\textrm{area}}{V \sin\(\frac{2\pi}{N_V}\)}}$\\
+      \hline
+    \end{tabular}
+    \caption{Orthogonal length of the cell for different cells.}
+  \end{centering}
+  \label{tab:ortho_length}
+\end{table}
+
 %-----------------------------------------------------------
 \subsection{AMG}
 %-----------------------------------------------------------
@@ -482,6 +597,44 @@ Acceleration scheme \cite{Adams2002,Wang2010}.
 \section{AMR} \label{sec:amr}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Adaptive Mesh Refinement} \label{sec_amr}
+In this Section, we introduce Adaptive Mesh Refinement (AMR)
+\cite{Jessee1998,Wang2010a,Ragusa2010}. The goal of AMR is to refine the mesh
+where it is necessary while keeping the mesh as coarse as possible everywhere
+else. It is common to have problems with a quickly varying solution on a small
+part of the domain (e.g. boundary layers) and a smooth solution on the rest of 
+the domain. AMR allows to create automatically a mesh very fined where the
+solution varies quickly while keeping the rest of the mesh coarse. AMR requires 
+an \emph{a posteriori} error indicator to decide which cells should be refined. 
+In this work, the error indicator on element $K$ is given by \cite{Wang2010a}:
+\begin{equation}
+  \eta_K = \frac{\int_{\partial K} \ldb\phi_K\rdb^2}{\|\Phi_K\|_2^2},
+  \label{error_indic}
+\end{equation}  
+This error indicator is based on the jump of the scalar flux between
+two cells. The larger the jump is the larger the error indicator. Given that
+the solution of the diffusion equation is continuous, \cref{error_indic} is a
+good error indicator. 
+
+The adaptive mesh refinement used in our code works as follows:
+\begin{enumerate}
+  \item The solution is computed on a coarse mesh.
+  \item The error indicator for each cell is computed.
+  \item All the cells $K$ such that $\eta_K > \epsilon \max_{J} \eta_J$ where
+    $\epsilon \in [0,1]$ are flagged for refinement.
+  \item The flagged cells are refined.
+  \item The solution on the coarse mesh is projected on the fine mesh.
+  \item Go back to 1.
+\end{enumerate}
+Step 5 is not necessary but it permits to decrease the time needed to solve
+the problem on the finer mesh since a very good initial guess is available to
+the solver.
+
+When a discretization that does not allow polygonal cells is employed, the
+refinement of the mesh may create hanging nodes. Whereas if polygonal cells can
+be used, hanging nodes are not necessary since every time a hanging node
+would be needed, one edge is added to 2 cells.
+
 
 In radiation transport and radiative transfer, lower-order spatial schemes are most commonly used. The AMR techniques employed with such schemes typically rely on gradient-based error estimates \cite{Jessee1998380}, with a few exceptions, e.g., \cite{kanschat-rad-transfer-97}, where an adjoint-based estimator is derived.
 Here, we wish to obtain error estimates for high-order spatial approximations and, therefore, may not rely on simpler estimates such as the gradient of the solution. We have chosen to follow several approaches to estimate the spatial discretization error and propose three means for controlling the spatial error in $S_N$ calculations. The first technique employs two adapted AMR meshes at each adaptivity cycle: a coarse AMR mesh $\mathbb{T}_h^k$ and a fine AMR mesh $\mathbb{T}_{h/2}^k$ obtained by uniform refinement of $\mathbb{T}_h^k$; in the preceding, $k$ denotes the mesh adaptivity cycle index. Error estimates are obtained using the two solutions computed on $\mathbb{T}_{h}^k$ and $\mathbb{T}_{h/2}^k$. This approach is also discussed in \cite{demko-book1,Solin2004449}. The second error estimation technique proposed here is a simple variant of the above technique, where the coarse solution is not computed but approximated by projecting the finer solution onto the coarser mesh. The third approach presented is heuristic and monitors the inter-element jumps of the solution across elements. We discuss these three error estimates below. For goal-oriented AMR, the estimates 
@@ -513,6 +666,43 @@ this aims at reducing the computational effort for a given quantity of interest.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 We present five examples to validate our approach.  
+
+In this Section, we compare the solution of the problem on an uniform mesh
+with the one on Z-mesh \cite{Stone2003}. We also show that the
+discretization used can easily handle unstructured polygonal grid. Finally, we
+conclude this section with an example of AMR mesh.
+\subsection{Z-mesh}
+The Z-mesh is defined as in \Cref{fig_z_mesh} where $\alpha$ is a parameter
+$\in [0,0.5]$. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{z_mesh}
+  \caption{Z-mesh ((x) is the number of divisions and Y is the distance in cm)}
+  \label{fig_z_mesh}
+\end{figure}    
+We compare the solution of the diffusion equation using the Z-mesh
+\fig{z_mesh_sol} with $\alpha=0.2$ with the one obtained using an uniform \fig{u_mesh_sol}. 
+The domain is 1cm by 1cm and is discretized using 20 by 20 cells. All the 
+boundary conditions are vacuum. The medium is homogeneous $\Sigma_a = 0.5 cm^{-1}$ 
+and $D=2$. There is a uniform source of intensity 1.                  
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{z_mesh_sol}
+  \caption{Scalar flux on the z-mesh}
+  \label{z_mesh_sol}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{pwld_uniform_sol}
+  \caption{Scalar flux on the uniform mesh}
+  \label{u_mesh_sol}
+\end{figure}
+
+\subsection{Randomized polygonal grid}
+
+\subsection{AMR}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Example 1} \label{sec:ex1}
