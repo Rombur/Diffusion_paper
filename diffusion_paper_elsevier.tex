@@ -335,15 +335,7 @@ diffusion equation on non
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-----------------------------------------------------------
-\subsection{Polygonal Grids}
-%-----------------------------------------------------------
-
-%-----------------------------------------------------------
-\subsection{Piecewise Linear Basis Functions on Arbitrary Polygons}
-%-----------------------------------------------------------
-
-%-----------------------------------------------------------
-\subsection{Application of Polygonal Meshes to Adaptive Mesh Refinement}
+\subsection{Polygonal Meshes and their Application to Adaptive Mesh Refinement}
 %-----------------------------------------------------------
 
 First, we want to point the usefulness of using polygonal
@@ -393,6 +385,43 @@ cells are noteworthy:
       \label{fig_amr_cells}
     \end{figure}
 \end{description}
+
+%-----------------------------------------------------------
+\subsection{Piecewise Linear Basis Functions on Arbitrary Polygons}
+%-----------------------------------------------------------
+
+Consider a polygonal cell with $N_V$ vertices. The polygon needs not 
+to be convex. In order to describe the piecewise linear basis functions
+for such a cell, we introduce a cell ``center'', denoted hereafter 
+by $c=(x_c,y_c)$ with $x_c =\sum_{i=1}^{N_V} \alpha_{i} x_i$
+and  $y_c = \sum_{i=1}^{N_V} \alpha_{i} y_i$. We require that
+$\sum_{i=1}^{N_V} \alpha_{i} = 1$. Point $c$ i a weighted average
+of the polygon's vertices. Often, one chooses $\alpha_i = 1 / N_V$.
+With the introduction of the cell center, the polygon can be viewed as
+$N_V$ triangular subcells, each triangle being composed of two
+successive vertices and the cell center.
+The $N_V$ piecewise linear basis functions are given by:
+%
+\begin{equation}
+  b_j(\br) = t_j(\br) + \alpha_{c,j} t_c(\br) , \qquad j=1,..,N_V$ ,
+\end{equation}
+%
+where $t_j(\br)$ is the standard linear functions defined on the two
+triangular subcells formed by (i) vertex $j$, vertex $j-1$ and the cell center $c$,
+and (ii) vertex $j$, vertex $j+1$ and the cell center $c$.
+$t_j$ is equal to one at the $j^{th}$ vertex and to zero all other vertices,
+as well as at the cell center.
+$t_c(\br)$ is a function associated with the cell center and is equal to one 
+at the cell center  and to zero at all of the polygon vertices.
+%
+We stress that this does not lead to a standard continuous finite element
+representation within a polygon that is cut into $N_V$
+triangular subcells; in such a case, the number of basis functions
+would be $N_V+1$ (for the $N_V$ vertices and the cell center). In the
+piecewise linear representation, the unknowns are only located at the cell 
+vertices and the cell center point is only used to define the basis functions.
+
+Put figures with PWL contour plots in a pentagon and in the degenerate pentagon.
 
 In this
 research, we focus on using PWLD to discretize the diffusion equation. The
