@@ -390,12 +390,12 @@ cells are noteworthy:
 \subsection{Piecewise Linear Basis Functions on Arbitrary Polygons}
 %-----------------------------------------------------------
 
-Consider a polygonal cell with $N_V$ vertices. The polygon needs not 
+Consider a polygonal cell with $N_V$ vertices, $(x_i,y_i)$. The polygon needs not 
 to be convex. In order to describe the piecewise linear basis functions
 for such a cell, we introduce a cell ``center'', denoted hereafter 
-by $c=(x_c,y_c)$ with $x_c =\sum_{i=1}^{N_V} \alpha_{i} x_i$
+by $c=(x_c,y_c)$, with $x_c =\sum_{i=1}^{N_V} \alpha_{i} x_i$
 and  $y_c = \sum_{i=1}^{N_V} \alpha_{i} y_i$. We require that
-$\sum_{i=1}^{N_V} \alpha_{i} = 1$. Point $c$ i a weighted average
+$\sum_{i=1}^{N_V} \alpha_{i} = 1$. Point $c$ is a weighted average
 of the polygon's vertices. Often, one chooses $\alpha_i = 1 / N_V$.
 With the introduction of the cell center, the polygon can be viewed as
 $N_V$ triangular subcells, each triangle being composed of two
@@ -403,10 +403,10 @@ successive vertices and the cell center.
 The $N_V$ piecewise linear basis functions are given by:
 %
 \begin{equation}
-  b_j(\br) = t_j(\br) + \alpha_{c,j} t_c(\br) , \qquad j=1,..,N_V$ ,
+  b_j(\br) = t_j(\br) + \alpha_{j} t_c(\br) , \qquad j=1,\ldots,N_V ,
 \end{equation}
 %
-where $t_j(\br)$ is the standard linear functions defined on the two
+where $t_j(\br)$ is the standard linear function defined on the two
 triangular subcells formed by (i) vertex $j$, vertex $j-1$ and the cell center $c$,
 and (ii) vertex $j$, vertex $j+1$ and the cell center $c$.
 $t_j$ is equal to one at the $j^{th}$ vertex and to zero all other vertices,
