@@ -8,14 +8,14 @@ close all; clc
 %
 %   A                  B
 %
-h=1;
+h=1.45;
 A=[0 0]; B=[1 0]; C=[1 1]; D=[0.5 h]; E=[0 1];
 
 % compute mid-point
 M=(A+B+C+D+E)/5
 
 % pick grid
-n=50
+n=151
 xx=linspace(0,1,n);
 yy=linspace(0,max([1 h]),n);
 
@@ -31,34 +31,38 @@ for i=1:length(xx)
         zM(i,j)=f_M(M,h,x,y);
     end
 end
-i=0;con=false;
+i=0;con=true; nc=69;
+
 i=i+1;figure(i)
-if(con),contour(xx,yy,zA',50);else,surf(xx,yy,zA');end
+if(con),contour(xx,yy,zA',nc);else,surf(xx,yy,zA');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-if(con),contour(xx,yy,zB',50);else,surf(xx,yy,zB');end
+if(con),contour(xx,yy,zB',nc);else,surf(xx,yy,zB');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-if(con),contour(xx,yy,zC',50);else,surf(xx,yy,zC');end
+if(con),contour(xx,yy,zC',nc);else,surf(xx,yy,zC');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-if(con),contour(xx,yy,zE',50);else,surf(xx,yy,zE');end
+if(con),contour(xx,yy,zE',nc);else,surf(xx,yy,zE');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-if(con),contour(xx,yy,zD',50);else,surf(xx,yy,zD');end
+if(con),contour(xx,yy,zD',nc);else,surf(xx,yy,zD');end
 xlabel('x');ylabel('y');
 
 i=i+1;figure(i)
-if(con),contour(xx,yy,zM',50);else,surf(xx,yy,zM');end
+if(con),contour(xx,yy,zM',nc);else,surf(xx,yy,zM');end
 xlabel('x');ylabel('y');
 
 i=i+1;figure(i)
-% surfc(xx,yy,(zA+zM/5)')
-if(con),contour(xx,yy,(zA+zM/5)',50);else,surf(xx,yy,(zA+zM/5)');end
+if(con),contour(xx,yy,(zA+zM/5)',nc);else,surf(xx,yy,(zA+zM/5)');end
 xlabel('x');ylabel('y');
 i=i+1;figure(i)
-if(con),contour(xx,yy,(zD+zM/5)',50);else,surf(xx,yy,(zD+zM/5)');end
+if(con),contour(xx,yy,(zD+zM/5)',nc);else,surf(xx,yy,(zD+zM/5)');end
 xlabel('x');ylabel('y');
+i=i+1;figure(i)
+if(con),contour(xx,yy,(zE+zM/5)',nc);else,surf(xx,yy,(zE+zM/5)');end
+xlabel('x');ylabel('y');
+
 % i=i+1;figure(i)
 % contour3(xx,yy,(zA+zM/5)',100)
 % xlabel('x');ylabel('y');
