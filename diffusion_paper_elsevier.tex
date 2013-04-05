@@ -285,13 +285,24 @@ grids \cite{Kuznetsov2004,Brezzi2005,LipnikovShashkovSvyatskiy2006,LipnikovShash
 %multiple MFD methods exists. MFD is efficient even on concave polygons
 %\cite{Kuznetsov2004}. MFD methods are related to mixed finite elements.
 %
-Bailey et al. \cite{BaileyAdams2008} recently employed a piecewise linear basis
-functions to solve the diffusion equation using a Galerkin finite element technique on 
-arbitrary polygonal and polyhedral grids. Their goal was to devise a continuous finite 
+Bailey et al. \cite{BaileyAdams2008} recently employed piecewise linear basis
+functions to solve a diffusion equation using a Galerkin finite element technique on 
+arbitrary polygonal and polyhedral grids. Their goal was to devise a {\em continuous} finite 
 element discretization that does not necessitate numerical integration, yields an SPD matrix, 
-and handles arbitrary polygonal/polyhedral grids (including grids with degenerate cells).
+is second-order accurate, and handles arbitrary polygonal/polyhedral grids (including 
+grids with degenerate cells). The approach they followed is a standard Galerkin weak 
+formulation for continuous finite elements, with piecewise linear basis functions 
+defined on subcells (which they called ``sides'') of arbitrary polygons/polyhedrons.
 
+In this paper, we are interested in solving a diffusion equation on arbitrary polygonal
+grids using a {\em discontinuous} finite element discretization. 
 
+The motivations for this are three-fold: 
+\begin{enumerate}
+\item to assess the performance of {\em discontinuous} finite element discretization
+\item DFEM SN transport
+\item 
+\end{enumerate}
 
 
 In this paper, we are interested in solving the diffusion equation on a
