@@ -295,18 +295,58 @@ formulation for continuous finite elements, with piecewise linear basis function
 defined on subcells (which they called ``sides'') of arbitrary polygons/polyhedrons.
 
 In this paper, we are interested in solving a diffusion equation on arbitrary polygonal
-grids using a {\em discontinuous} finite element discretization. 
-
-The motivations for this are three-fold: 
+grids using a {\em discontinuous} finite element discretization. We employ the
+Symmetric Interior Penalty (SIP) technique \cite{IPRefs}, developed for the discretization
+of elliptic equations using discontinuous Galerkin techniques. For basis functions,
+we use the piecewise linear functions of \cite{BaileyAdams2008}.
+The motivations are three-fold: 
 \begin{enumerate}
-\item to assess the performance of {\em discontinuous} finite element discretization
-\item DFEM SN transport
+\item we wish to assess the performance of the discontinuous finite elements for 
+the discretization of the diffusion equation on polygonal meshes;
+\item a diffusion equation often serves as a synthetic accelerator or as a
+preconditioner for iterative solution techniques of the particle transport equation
+\cite{AdamsLarsen2002}. A discontinuous finite element technique is often employ
+in the discretization of the transport equation for unstructured and 
+polygonal/polyhedral grids \cite{MorelWarsaWareing,PWLD,CFEM-PWDL-Warsa,WangRagusa}.
+Employing the same    
 \item 
 \end{enumerate}
+The motivations for our work / In this work, we wish to assess ... In addition,
+a diffusion equation often serves as a synthetic accelerator or as a
+preconditioner \cite{AdamsLarsen2002} for iterative solution techniques of the 
+radiation transport equation.
+% , where a discontinuous finite element technique is often preferred
+% in the discretization of the transport equation for unstructured and 
+% polygonal/polyhedral grids \cite{MorelWarsaWareing,PWLD,CFEM-PWDL-Warsa,WangRagusa}.
 
+The remainder of the paper is as follows. In \sct{sec:poly}, we discuss
+the use of polygonal meshes, recall the definition of the piecewise linear
+basis functions for arbitrary polygons, and point out how polygonal grids
+can be utilized in handling local mesh refinement (as in adaptive mesh refinement 
+approaches). The Symmetric Inetrior Penalty technique is reviewed in \sct{sec:ip}.
+The resulting linear system wll be solved using an Algebraic MultiGrid (AMG) approach.
+Results are presented in \sct{sec:results}; all of the test cases presented
+are borrowed from the literature on (1) finite differences applied to the
+diffusion equation on non 
 
-In this paper, we are interested in solving the diffusion equation on a
-polygonal mesh. First, we want to point the usefulness of using polygonal
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Polygonal Grids and Piecewise Linear Basis Functions} \label{sec:poly}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------------------------------
+\subsection{Polygonal Grids}
+%-----------------------------------------------------------
+
+%-----------------------------------------------------------
+\subsection{Piecewise Linear Basis Functions on Arbitrary Polygons}
+%-----------------------------------------------------------
+
+%-----------------------------------------------------------
+\subsection{Application of Polygonal Meshes to Adaptive Mesh Refinement}
+%-----------------------------------------------------------
+
+First, we want to point the usefulness of using polygonal
 cells to discretize the domain of a problem. Such cell type presents a big 
 advantage over traditional cells type (triangles and rectangles): polygonal 
 cells allow for meshing flexibility. Boundary layer meshes can easily be set 
@@ -353,65 +393,32 @@ cells are noteworthy:
       \label{fig_amr_cells}
     \end{figure}
 \end{description}
-Several discretization methods have been developed for arbitrary polygonal
-meshes: Palmer's method \cite{Palmer2001}, mimetic finite differences
-\cite{Lipnikov2004,Hyman2002,Kuznetsov2004,Brezzi2005},
-Wachspress' rationale finite element \cite{Wachspress1975},
-CFEM-based DFEM \cite{Warsa2008}, PWLC \cite{Bailey2008a}, PWLD 
-\cite{Stone2003,Bailey2008,Bailey2008a}, and PWBLD \cite{Bailey2011}. In this
+
+In this
 research, we focus on using PWLD to discretize the diffusion equation. The
 PWLD discretization employs discontinuous finite elements and has been used to
 discretize the transport equation. Using it to discretize the diffusion
 equation is an important step in order to create a Diffusion Synthetic
 Acceleration scheme \cite{Adams2002,Wang2010}.
-In \Cref{sec_review}, we review different discretizations that can be used on
-polygonal cells to discretize the diffusion equation. In \Cref{sec_ip}, we
-use the PWLD finite elements to discretize the diffusion
-equation. In \Cref{sec_amr}, we introduce the Adaptive Mesh Refinement
-technique (AMR). In \Cref{sec_results}, we show some numerical results. We finish
-in \Cref{sec_conc} by giving our conclusions.
-
-
-
-
-
-
-
-An outline of the remainder of this paper is as follows: in Section~\ref{sec:dgfem}, 
-we briefly introduce the  high-order Discontinuous Finite Element formulation used for
-the  $S_{N}$ transport equation and briefly recall the standard iterative techniques used to
-solve the discretized equations. 
-%
-Section~\ref{sec:error} presents the three error estimators employed in this work: two are based on the
-difference between coarse and fine adapted solutions whereas the last estimator only requires one numerical solution at each adaptivity cycle and monitors ``how'' discontinuous the numerical solution is. 
-%
-In Section~\ref{sec:go-error}, we derive the goal-oriented AMR approach; the goal-oriented error estimators re-use the technology presented in Section~\ref{sec:error} and, therefore, we focus the presentation of the introduction of the importance function and provide some examples of quantities of interest.
-%
-Section~\ref{sec:mesh-adapt} deals with the adaptivity process itself: selection of mesh cells 
-for refinement and coupling between mesh cells of various refinement levels in the context of 
-a Discontinuous Galerkin spatial discretization with upwinding. 
-%
-In Section~\ref{sec:results}, 2-D results are presented: a simple homogeneous problem employed to present in details the performance of AMR (Example 1), a searchlight problem (Example 2), a problem with different material opacities (Examples 3--5). Examples 4 and 5 compare the standard and the goal-oriented AMR approaches.
-%
-We conclude in Section~\ref{sec:conclusions} and present an outlook on open questions.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Finite Element formulation and solution procedure} \label{sec:dgfem}
+\section{Finite Element Formulation} \label{sec:ip}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
+%-----------------------------------------------------------
+\subsection{SIP}
+%-----------------------------------------------------------
+
+%-----------------------------------------------------------
+\subsection{AMG}
+%-----------------------------------------------------------
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{High-order DGFEM for $S_N$ transport} \label{sec:dgfem-transport}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Error Estimation Procedure} \label{sec:error}
+\section{AMR} \label{sec:amr}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -420,18 +427,6 @@ Here, we wish to obtain error estimates for high-order spatial approximations an
 described here can be re-used ``as is''; see Section~\ref{sec:go-error}.
 
 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Mesh Adaptation} \label{sec:mesh-adapt}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-In this section, we discuss the refinement criterion and the element coupling 
-procedure for any refinement difference level and any polynomial approximation
-between elements.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Refinement Criteria} \label{sec:error4}
@@ -447,21 +442,6 @@ previously defined in \eqt{eq:error-est1}, \eqt{eq:error-est2}, \eqt{eq:error-ju
 The criterion of \eqt{eq:criterion} focuses the computational effort on elements with the largest errors; for
 standard AMR, this tends to naturally equi-distribute the spatial error, whereas for goal-oriented approaches
 this aims at reducing the computational effort for a given quantity of interest. 
-
-In order to numerically verify that the proposed error estimates are reliable, a \emph{reference} numerical solution $\mathcal{I}_{0,0}^{\textit{ref}}$ is used to assess the convergence rate of the AMR solutions obtained with any of the proposed error estimates. 
-In practice, the reference solution $\mathcal{I}_{0,0}^{\textit{ref}}$ needs to be obtained numerically. To do so, we employ the two-mesh error estimator of \eqt{eq:error-est1} with tighter tolerances, fourth order polynomial approximation and additional adaptivity cycles. 
-Hence, we defined a ``true'' approximation error, given in the $L_2$-norm, as follows
-%
-\be
-\varepsilon^k = \sqrt{ \sum_K \int_{K\in \mathbb{T}^{k}_{h}}
-\left( \mathcal{I}_{0,0}^{k} - \mathcal{I}_{0,0}^{\textit{ref}}\right) ^{2} },
-\label{eq:ref-solu}
-\ee
-%
-where  $\mathcal{I}_{0,0}^{k}$ is the numerical solution (at each mesh adaptivity cycle $k$) obtained with any of the error estimates in \eqt{eq:error-est1}, \eqt{eq:error-est2}, \eqt{eq:error-jump}  or \eqt{eq:error-go}. 
-
-
-In Section~\ref{sec:results}, we compare the approximation error, \eqt{eq:ref-solu}, as a function of the number of unknowns and CPU time for the following  refinement strategies: (i) uniform mesh refinement, (ii) adaptivity using the jump-based indicators of \eqt{eq:error-jump}, and (iii) adaptivity using the two-mesh error estimates of Eqs. (\ref{eq:error-est1}) and (\ref{eq:error-est2}). The meshes resulting from the various AMR strategies will also be compared.
 
 
  
