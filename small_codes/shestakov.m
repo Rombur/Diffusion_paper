@@ -6,7 +6,7 @@ clear all; close all; clc;
 % a = 0.5 gives a rectangular % mesh. Boomerang zones are allowed 
 % but bowties are not allowed.
 %
-% Matlab version by Jean C. Ragusa, Texas A University, April 1, 2013
+% Matlab version by Jean C. Ragusa, Texas A&M University, April 1, 2013
 %
 % based on the original Fortran program by Alek Sheshakov; that program 
 % is found in: Nuclear Science & Engineering, Vol 105, pp.88-104 (1990),
