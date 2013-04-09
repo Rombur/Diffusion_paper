@@ -134,6 +134,8 @@
 \newcommand\llb{\llbracket}
 \newcommand\rrb{\rrbracket}
 \newcommand\mc{\mathcal}
+%\newcommand{\tf}{\varphi}
+\newcommand{\tf}{b}
 
 \renewcommand{\(}{\left(}
 \renewcommand{\)}{\right)}
@@ -477,6 +479,52 @@ and in \fig{fig:pwl_degen_pentagon} for the degenerate pentagon as an example.
 \section{Finite Element Formulation} \label{sec:ip}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this Section, we present the discontinuous Galerkin finite element technique employed here to
+discretize the radiation diffusion equation on arbitrary polygonal grids. Many variants of such
+methods exist for diffusion problems (depending on the choice of stabilization terms, whether 
+the diffusion equation is expressed in its mixed form, \ldots). We refer the Readers to the review
+papers \cite{unification,brezzi etc} for additional details. Here, we employ the Symmetric
+Interior Penalty (SIP) method which we have found to be robust in our test cases and relatively simple 
+to implement.
+%Even though discontinuous Galerkin methods are commonly used in the particle and radiation transport communities, 
+The general idea of interior penalty methods can be traced back to \cite{lions1968}, where the Dirichlet
+boundary conditions to the model problem $\{-\dvi \grad E = Q\right$ in domain $\Omega$, $E=E^d$ on 
+the boundary $\partial \Omega\}$ have been enforced via a penalty method, thereby modifying the 
+boundary condition to read $E+\frac{1}{\mu}\partial_n E = E^d$ with $\mu\gg 1$. Later, 
+Nitsche \cite{nitsche1971} proposed a consistent formulation for the enforcement of the 
+Dirichlet boundary condition with a penalty term, leading to the weak formulation:
+\begin{equation}
+\label{eq:penalty_nitsche}
+\int_{\Omega} \grad E \cdot \grad \tf
+- \int_{\partial\Omega} \partial_n E \tf  
+- \int_{\partial\Omega} \partial_n \tf E 
++ \int_{\partial\Omega} \mu(E-E^d) \tf 
+=
+\int_{\Omega} Q \tf 
+- \int_{\partial\Omega} E^d \partial_n \tf ,
+\end{equation}
+with $\tf$ a finite element basis function and $\mu=\alpha/h$, where $h$ denotes 
+the mesh size and $\alpha>1$ is a constant.
+
+This idea, extended to all cell edges (not only cells with edges on the boundary), leads
+to the interior penalty methods for discontinuous finite elements. We introduce a partition
+of $\bigcup\nolimits_{K\in \mathbb{T}_{h}}K=\Omega$ of the domain $\Omega$ (and assume
+that the boundary of the domain, $\partial \Omega$, consists of straight edges only). The 
+set of interior and boundary edges is denoted by $\mathcal{E}_h^i$ and $\mathcal{E}_h^{\partial\Omega}$,
+respectively.  Then, the SIP weak form is given by
+\begin{equation}
+\label{eq:penalty_nitsche}
+\int_{\Omega} \grad E \cdot \grad \tf
+- \int_{\partial\Omega} \mvl{\partial_n E} \jmp{\tf}  
+- \int_{\partial\Omega} \jmp{\partial_n \tf} \mvl{E} 
++ \int_{\partial\Omega} \mu(E-E^d) \tf 
+=
+\int_{\Omega} Q \tf 
+- \int_{\partial\Omega} E^d \partial_n \tf ,
+\end{equation}
+
+% Obviously, the domain boundary is the  $\partial \Omega = \mathcal{E}_h^{\partial\Omega,D}\cup \mathcal{E}_h^{\partial\Omega,N} \cup \mathcal{E}_h^{\partial\Omega,R}$.
  
 %-----------------------------------------------------------
 \subsection{SIP}
@@ -526,7 +574,7 @@ and:
 \end{equation}
 with $\tilde{\phi}=(\phi_1 b_1,\hdots, \phi_N b_N)^T$, $b = (b_1,\hdots,b_N)$,
 $b_i \in W_{\mc{D}}^h$ $\forall i \in (1,\hdots,N)$,
-the mesh $\mc{T}_h$ is used to discretize $\mc{D}$ into nonoverlapping linear
+the mesh $\mc{T}_h$ is used to discretize $\mc{D}$ into non-overlapping linear
 elements $K$, such that the union of the elements fully covers $\mc{D}$. The
 finite dimensional polynomial space is $W_{\mc{D}}^h = \{f \in L^2(\mc{D});
 f|_K \in V_p(K), \forall K \in \mc{T}_h$\}, where $V_p(K)$ is the space of
