@@ -31,3 +31,18 @@ and $D=2$. There is a uniform source of intensity 1.
 \end{figure}
 \subsection{Randomized polygonal grid}
 \subsection{AMR}
+The AMR problem is composed of two regions, see \Cref{amr_regions}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=3cm]{amr_zones}
+  \caption{Regions of the AMR problem.}
+  \label{amr_regions}
+\end{figure}
+The domain is a square of 10cm side (blue region) with in its center a smaller
+square of 2cm side (red region). In the blue region, we have
+$\Sigma_t=2cm^{-1}$ and $\Sigma_s=1cm^{-1}$. In the red region, we have
+$\Sigma_t=1cm^{-1}$, $\Sigma_s=0.8cm^{-1}$, and a source of intensity $10
+n/cm^{2}$. We use vacuum boundaries. The domain is initially discretize using
+an uniform mesh of five by five cells. This mesh is then refined three
+times. For each refinement, the cells with an estimated error of 70\% or more
+of the largest estimated error are refined.
