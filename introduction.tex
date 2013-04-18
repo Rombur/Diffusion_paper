@@ -5,11 +5,12 @@
 This paper deals with a discontinuous finite element spatial discretizations of the radiation 
 diffusion equation on arbitrary polygonal grids, with and without adaptive mesh refinement. 
 Radiation diffusion is an asymptotic limit of the radiation transport equation and can be 
-written in the following form:
+written in the following form \red{Soit on change cette equation, soit on
+change les equations dans interior penalty}:
 \begin{equation} \label{eq:radiation_diffusion}
-- \div  D(\vr) \grad E(\vr) + \sigma_a(\vr) E(\vr) = Q(\vr) ,
+- \div  D(\vr) \grad E(\vr) + \Sigma_a(\vr) E(\vr) = Q(\vr) ,
 \end{equation}
-where $E$ is the radiation energy intensity, $D$ is a diffusion coefficient, $\sigma_a$ is 
+where $E$ is the radiation energy intensity, $D$ is a diffusion coefficient, $\Sigma_a$ is 
 an opacity coefficient, and $Q$ is the source.
 
 Several spatial discretizations have been proposed to solve \eqt{eq:radiation_diffusion} on
@@ -44,7 +45,7 @@ as symmetry, positivity, monotonicity, asymptotic limits, and identities pertain
 to tensor and vector calculus. Mimetic methods can also be viewed as mixed hybrid 
 finite element formulations with specific spatial quadratures.  
 In addition to quadrilateral and hexahedral meshes (see, e.g., 
-\cite{MorelRobertsShashkov1998,MorelHallShashkov2001}, mimetic finite difference 
+\cite{MorelRobertsShashkov1998,MorelHallShashkov2001}), mimetic finite difference 
 methods have recently been applied to the diffusion equation on arbitrary polygonal 
 grids \cite{Kuznetsov2004,Brezzi2005,LipnikovShashkovSvyatskiy2006,LipnikovShashkov2010}.
 %conformal quadrilateral \cite{HymanShashkovSteinberg1997, ShashkovSteinberg1996,MorelRobertsShashkov1998} 

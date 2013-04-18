@@ -3,8 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this Section, we review different discretizations that can be used on polygonal
-meshes at the exception of the PWLD discretization which will be introduce in
-the next Section.
+meshes.
 
 %-----------------------------------------------------------
 \subsection{Palmer's method}
@@ -17,7 +16,7 @@ volume is the union of all corners surrounding a vertex $p$. A corner is a
 quadrilateral defined by the vertex $p$, the cell-center $c$, and the midpoint
 of the edges $e$ that contain the point $p$. On a triangular grid, the
 scheme is equivalent to linear continuous finite elements with ``mass-matrix
-lumping''. This method works for any polygonal cell even concave polygon. The
+lumping''. This method works for any, even concave, polygonal cell. The
 main disadvantage of Palmer's method is that the discretization of the
 diffusion equation does not lead to symmetric system in the general case.
 
@@ -110,14 +109,14 @@ $(x_2,y_2)$:
 \begin{equation}
   P_{1,2}(x,y) = (y-y_1) (x_2-x_1)-(x-x_1)(y_2-y_1).
 \end{equation}  
-Therefore, Wachspress' basis functions are given by:
+Using this definition, Wachspress' basis functions are given by:
 \begin{align}
   &b_0(x,y) = k_0 P_{2,3}(x,y)P_{1,2}(x,y)/P_{4,5}(x,y),\\
   &b_1(x,y) = k_1 P_{0,3}(x,y)P_{2,3}(x,y)/P_{4,5}(x,y),\\
   &b_2(x,y) = k_2 P_{0,1}(x,y)P_{3,0}(x,y)/P_{4,5}(x,y),\\
   &b_3(x,y) = k_3 P_{1,2}(x,y)P_{0,1}(x,y)/P_{4,5}(x,y),
 \end{align}
-where $k_i$ are chose such that $b_i(x_i,y_i)=1$. $(x_4,y_4)$ and $(x_5,y_5)$
+where $k_i$ are chosen such that $b_i(x_i,y_i)=1$. $(x_4,y_4)$ and $(x_5,y_5)$
 are the intersections of the prolongations of the edges 
 of the quadrilaterals (see \Cref{fig_quadrilateral}).
 \begin{figure}[H]
@@ -198,9 +197,9 @@ The scheme is second order \cite{Warsa2008}. The discretization is done by
 first dividing the cells into triangles that we call sub-cells. The sub-cells
 are formed by filling the polygons with triangles without adding point (type
 0) or by adding the centers of the cells as the vertices of the sub-cells
-(type 1). Linear DFEM are built on the triangles. Type 1 CFEM-based DFEM is
+(type 1). Linear DFEM are built on these triangles. Type 1 CFEM-based DFEM is
 similar to PWLD but whereas PWLD eliminates the center unknown by setting it
-to be the weighted average of the values at the vertexes, CFEM-based DFEM keeps 
+to be the weighted average of the values at the vertices, CFEM-based DFEM keeps 
 the additional degree of freedom as an unknown. The mass matrix 
 $\bs{M}$ for a given cell composed of $N$ sub-cells is assembled by looping
 over the sub-cell and for each sub-cell $n$:
@@ -236,7 +235,7 @@ for $n=1,\hdots,N,$ to the corresponding face of the polygon.
 \subsection{PWLC}
 %-----------------------------------------------------------
 PWLC stands for PieceWise Linear Continuous finite elements. It is a second
-order method which when used to discretize the diffusion equation produces 
+order method used to discretize the diffusion equation produces 
 a Symmetric Positive-Definite (SPD) matrix \cite{Bailey2008}. The PWL basis 
 function associated to $j^{th}$ vertex is given by:
 \begin{equation}
@@ -259,7 +258,8 @@ CFEM-based DFEM. Both methods use sub-cells to build the mass matrix and the
 streaming matrix. However since for PWLD, the center unknown is eliminated,
 \cref{mass_cfem,stream_cfem} become:
 \begin{align}
-  \bs{M}_{t_n(u),t_n(v)} &= \bs{M}_{t_n(u),t_n(v)} + w_{n,u,v}\bs{M}_{n,u,v}, 
+  \bs{M}_{t_n(u),t_n(v)} &= \bs{M}_{t_n(u),t_n(v)} +
+  w_{n,u,v}\bs{M}_{n,u,v},\\
   \bs{L}_{t_n(u),t_n(v)} &= \bs{L}_{t_n(u),t_n(v)} + w_{n,u,v} \bs{L}_{n,u,v}, 
 \end{align}
 for $u=1,2,3,\ v=1,2,3$. $w_{n,u,v}$ is a weighting function which is used to
