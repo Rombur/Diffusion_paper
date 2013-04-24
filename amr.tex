@@ -7,9 +7,11 @@ part of the domain (e.g. boundary layers) and a smooth solution on the rest of
 the domain. AMR allows to create automatically a mesh very fined where the
 solution varies quickly while keeping the rest of the mesh coarse. AMR requires 
 an \emph{a posteriori} error indicator to decide which cells should be refined. 
-In this work, the error indicator on element $K$ is given by \cite{Wang2010a}:
+In this work, the error indicator on element $K$ is a simplified version of
+the one found in \cite{Wang2010a}:
 \begin{equation}
-  \eta_K = \frac{\int_{\partial K} \ldb\phi_K\rdb^2}{\|\Phi_K\|_2^2},
+%  \eta_K = \frac{\int_{\partial K} \ldb\phi_K\rdb^2}{\|\Phi_K\|_2^2},
+  \eta_K = \frac{\int_{\partial K} \ldb\phi_K\rdb^2}{Area\ of\ K},
   \label{error_indic}
 \end{equation}  
 This error indicator is based on the jump of the scalar flux between

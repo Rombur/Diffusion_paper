@@ -43,7 +43,7 @@ square of 2cm side (red region). In the blue region, we have
 $\Sigma_t=2cm^{-1}$ and $\Sigma_s=1cm^{-1}$. In the red region, we have
 $\Sigma_t=1cm^{-1}$, $\Sigma_s=0.8cm^{-1}$, and a source of intensity $10
 n/cm^{2}$. We use vacuum boundaries. The domain is initially discretize using
-an uniform mesh of five by five cells. This mesh is then refined three
+an uniform mesh of five by five cells. This mesh is then refined two
 times. For each refinement, the cells with an estimated error of 70\% or more
 of the largest estimated error are refined. \Cref{diffusion_amr} shows the
 results.
@@ -53,5 +53,4 @@ results.
   \caption{Solution of the AMR problem.}
   \label{diffusion_amr}
 \end{figure}
-\red{Je ne sais pas pourquoi ce ne sont pas pourquoi le raffinement est si
-mauvais. Il y a surement un bug.}
+\red{Pour l'instant on ne peut faire que 2 raffinements avec le code.}
