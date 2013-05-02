@@ -1,11 +1,11 @@
-pdf : diffusion_paper.tex
-	pdflatex diffusion_paper
-	bibtex diffusion_paper
-	pdflatex diffusion_paper
-	pdflatex diffusion_paper
+pdf : diffusion_paper_elsevier.tex
+	pdflatex diffusion_paper_elsevier
+	bibtex diffusion_paper_elsevier
+	pdflatex diffusion_paper_elsevier
+	pdflatex diffusion_paper_elsevier
 
 .PHONY : clean
 
 clean :
-	-rm diffusion_paper.tex
+	-rm diffusion_paper_elsevier.pdf
 	-rm *.log *.aux *.bbl *.blg

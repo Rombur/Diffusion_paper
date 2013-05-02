@@ -45,7 +45,7 @@
 %% if you use PostScript figures in your article
 %% use the graphics package for simple commands
 %\usepackage{graphics}
-%\usepackage{float}
+\usepackage{float}
 \usepackage{subfigure}
 %\usepackage{subfig}
 
@@ -69,7 +69,7 @@
 %\usepackage{enumerate} % permet d'utiliser enumerate
 %\usepackage{moreverb} % permet d'utiliser verbatimtab : conservation la tabulation
 \usepackage{stmaryrd} % permet d'utiliser \llbrackedt et \rrbracket : double crochet
-%\usepackage[noabbrev]{cleveref} % permet d'utiliser cref and Cref
+\usepackage[noabbrev]{cleveref} % permet d'utiliser cref and Cref
 %\usepackage{caption} % permet d'utiliser subcaption
 %\usepackage{subcaption} % permet d'utiliser subfigure, subtable, etc
 %\usepackage[margin=1.in]{geometry}
@@ -189,7 +189,7 @@
 
 %-------------------------
 \author{Bruno Turcksin \fnref{label1}}
-\ead{bruno.turcksin@neo.tamu.edu}
+\ead{bruno.turcksin@math.tamu.edu}
 
 \address[label1]{Department of Nuclear Engineering, Texas A\&M University 
   College Station, TX 77843, USA \fnref{label2}}
@@ -251,10 +251,10 @@ where $E$ is the radiation energy intensity, $D$ is a diffusion coefficient, $\s
 an opacity coefficient, and $Q$ is the source.
 
 Several spatial discretizations have been proposed to solve \eqt{eq:radiation_diffusion} on
-arbitrary polygons (2D) and polyhedra (3D) \cite{Wachspress,Kuznetsov2004,Palmer2005,Brezzi2005,
-LipnikovShashkovSvyatskiy2006,BaileyAdams2008}. We review them below.
+arbitrary polygons (2D) and polyhedra (3D) \cite{Wachspress1975,Kuznetsov2004,Palmer2005,Brezzi2005,
+LipnikovShashkovSvyatskiy2006,Bailey2008a}. We review them below.
 %
-Wachspress \cite{Wachspress} developed a family of rational polynomial functions that can be employed
+Wachspress \cite{Wachspress1975} developed a family of rational polynomial functions that can be employed
 as basis functions in a finite element method on polygonal/polyhedral grids. This yields
 symmetric positive-definite (SPD) matrices but (i) the finite element integrals must be carried out 
 numerically and (ii) the Jacobian of the transformation becomes zero on degenerate cells 
@@ -298,7 +298,7 @@ grids \cite{Kuznetsov2004,Brezzi2005,LipnikovShashkovSvyatskiy2006,LipnikovShash
 %multiple MFD methods exists. MFD is efficient even on concave polygons
 %\cite{Kuznetsov2004}. MFD methods are related to mixed finite elements.
 %
-Bailey et al. \cite{BaileyAdams2008} recently employed piecewise linear basis
+Bailey et al. \cite{Bailey2008a} recently employed piecewise linear basis
 functions to solve a diffusion equation using a Galerkin finite element technique on 
 arbitrary polygonal and polyhedral grids. Their goal was to devise a {\em continuous} finite 
 element discretization that does not necessitate numerical integration, yields an SPD matrix, 
@@ -311,7 +311,7 @@ In this paper, we are interested in solving a diffusion equation on arbitrary po
 grids using a {\em discontinuous} finite element discretization. We employ the
 Symmetric Interior Penalty (SIP) technique \cite{IPRefs}, developed for the discretization
 of elliptic equations using discontinuous Galerkin techniques. For basis functions,
-we use the piecewise linear functions of \cite{BaileyAdams2008}.
+we use the piecewise linear functions of \cite{Bailey2008a}.
 The motivations are three-fold: 
 \begin{enumerate}
 \item we wish to assess the performance of the discontinuous finite elements for 
@@ -377,7 +377,7 @@ resolution.  The following features of polygonal cells are noteworthy:
 	pentagon.
 \end{itemize}
 
-\begin{figure}[!hbtp]
+\begin{figure}[H]
 \centering
 %\vspace{40mm}
 %\hspace{-55mm}
@@ -436,7 +436,7 @@ The isolines of the piecewise linear basis functions for vertex $D$ and
 $E$ are graphed in \fig{fig:pwl_pentagon} for the regular pentagon
 and in \fig{fig:pwl_degen_pentagon} for the degenerate pentagon as an example.
 %
-\begin{figure}[!hbtp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.77]{pentagons.png}
 \label{fig:pentagons}
@@ -444,7 +444,7 @@ and in \fig{fig:pwl_degen_pentagon} for the degenerate pentagon as an example.
 \end{figure}
 %
 %
-\begin{figure}[!hbtp]
+\begin{figure}[H]
 \centering
 \subfigure[Basis function for Point D]{
 \includegraphics[scale=0.33]{PWL_D.png}
@@ -458,7 +458,7 @@ and in \fig{fig:pwl_degen_pentagon} for the degenerate pentagon as an example.
 \label{fig:pwl_pentagon}
 \end{figure}
 %
-\begin{figure}[!hbtp]
+\begin{figure}[H]
 \centering
 \subfigure[Basis function for Point D]{
 \includegraphics[scale=0.33]{PWL_D_flat.png}
@@ -489,7 +489,7 @@ Interior Penalty (SIP) method which we have found to be robust in our test cases
 to implement.
 %Even though discontinuous Galerkin methods are commonly used in the particle and radiation transport communities, 
 The general idea of interior penalty methods can be traced back to \cite{lions1968}, where the Dirichlet
-boundary conditions to the model problem $\{-\dvi \grad E = Q\right$ in domain $\Omega$, $E=E^d$ on 
+boundary conditions to the model problem $\{-\div \grad E = Q$ in domain $\Omega$, $E=E^d$ on 
 the boundary $\partial \Omega\}$ have been enforced via a penalty method, thereby modifying the 
 boundary condition to read $E+\frac{1}{\mu}\partial_n E = E^d$ with $\mu\gg 1$. Later, 
 Nitsche \cite{nitsche1971} proposed a consistent formulation for the enforcement of the 
@@ -766,100 +766,103 @@ and $D=2$. There is a uniform source of intensity 1.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=1.]{two-mesh.eps}
-\end{center}
-\caption{Schematics of the two-mesh AMR approach.}
-\label{fig:2-mesh-schematics}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.4]{ref-rules2.eps}
-\end{center}
-\caption{Refinement rule: the original triangle is bisected into 4 smaller triangles; 
-local numbering rules are defined; a tree structure is employed to obtain the refinement level depth.}
-\label{fig:triangle-ref-rule}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
-
-\begin{figure}[!hbtp]
-\centering
-\subfigure[0-level refinement difference]{
-\includegraphics[scale=0.45]{edge-coupling-0}
-\label{fig:sub_edge0}
-}
-\subfigure[1-level refinement difference]{
-\includegraphics[scale=0.45]{edge-coupling-1}
-\label{fig:sub_edge1}
-}
-\subfigure[1-level refinement difference]{
-\includegraphics[scale=0.45]{edge-coupling-1b}
-\label{fig:sub_edge1b}
-}
-\caption{Cases of edge coupling.}
-\label{fig:edge_coupling_fig}
-\end{figure}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COMMENTER TO ALLOW COMPILATION
 
-\pagebreak
-
-\begin{figure}[h]
-\begin{minipage}[b]{1.\linewidth}
+%\pagebreak
 %
-\begin{center}
-\subfigure[Two-mesh AMR]
-{
-\includegraphics[width=3.5cm]{mesh-TB-est-2mesh-c14-p-1.ps}
-\includegraphics[width=3.5cm]{mesh-TB-est-2mesh-c14-p-2.ps}
-\includegraphics[width=3.75cm]{mesh-TB-est-2mesh-c14-p-3.ps}
-\includegraphics[width=4.35cm]{mesh-TB-est-2mesh-c14-p-4.ps} 
-}
-\end{center}
-\end{minipage}
+%\begin{figure}[h]
+%\begin{center}
+%\includegraphics[scale=1.]{two-mesh.eps}
+%\end{center}
+%\caption{Schematics of the two-mesh AMR approach.}
+%\label{fig:2-mesh-schematics}
+%\end{figure}
 %
-\begin{minipage}[b]{1.\linewidth}
-\begin{center}
-\subfigure[Jump-based AMR ]
-{
-\includegraphics[scale=0.17]{mesh-TB-jump-c14-p1.ps}
-\includegraphics[scale=0.17]{mesh-TB-jump-c14-p2.ps}
-\includegraphics[scale=0.17]{mesh-TB-jump-c14-p3.ps}
-\includegraphics[scale=0.17]{mesh-TB-jump-c14-p4.ps}
-}
-\end{center}
-\end{minipage}
-\caption{Example 3: Adapted meshes. From left to right, $p=1,\,2,\,3,\,4$}
-\label{fig:ex3-meshes}
-\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pagebreak
+%
+%\begin{figure}[h]
+%\begin{center}
+%\includegraphics[scale=0.4]{ref-rules2.eps}
+%\end{center}
+%\caption{Refinement rule: the original triangle is bisected into 4 smaller triangles; 
+%local numbering rules are defined; a tree structure is employed to obtain the refinement level depth.}
+%\label{fig:triangle-ref-rule}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pagebreak
+%
+%\begin{figure}[!hbtp]
+%\centering
+%\subfigure[0-level refinement difference]{
+%\includegraphics[scale=0.45]{edge-coupling-0}
+%\label{fig:sub_edge0}
+%}
+%\subfigure[1-level refinement difference]{
+%\includegraphics[scale=0.45]{edge-coupling-1}
+%\label{fig:sub_edge1}
+%}
+%\subfigure[1-level refinement difference]{
+%\includegraphics[scale=0.45]{edge-coupling-1b}
+%\label{fig:sub_edge1b}
+%}
+%\caption{Cases of edge coupling.}
+%\label{fig:edge_coupling_fig}
+%\end{figure}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\pagebreak
+%
+%\begin{figure}[h]
+%\begin{minipage}[b]{1.\linewidth}
+%%
+%\begin{center}
+%\subfigure[Two-mesh AMR]
+%{
+%\includegraphics[width=3.5cm]{mesh-TB-est-2mesh-c14-p-1.ps}
+%\includegraphics[width=3.5cm]{mesh-TB-est-2mesh-c14-p-2.ps}
+%\includegraphics[width=3.75cm]{mesh-TB-est-2mesh-c14-p-3.ps}
+%\includegraphics[width=4.35cm]{mesh-TB-est-2mesh-c14-p-4.ps} 
+%}
+%\end{center}
+%\end{minipage}
+%%
+%\begin{minipage}[b]{1.\linewidth}
+%\begin{center}
+%\subfigure[Jump-based AMR ]
+%{
+%\includegraphics[scale=0.17]{mesh-TB-jump-c14-p1.ps}
+%\includegraphics[scale=0.17]{mesh-TB-jump-c14-p2.ps}
+%\includegraphics[scale=0.17]{mesh-TB-jump-c14-p3.ps}
+%\includegraphics[scale=0.17]{mesh-TB-jump-c14-p4.ps}
+%}
+%\end{center}
+%\end{minipage}
+%\caption{Example 3: Adapted meshes. From left to right, $p=1,\,2,\,3,\,4$}
+%\label{fig:ex3-meshes}
+%\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\include{bibli.bib}
-%\bibliographystyle{unsrt}
-%\bibliography{bibli}
 
 \pagebreak
 
 
-\begin{thebibliography}{100}
+%\begin{thebibliography}{100}
+%
+%
+%\end{thebibliography}
 
-
-\end{thebibliography}
-
+\bibliographystyle{unsrt}
+\bibliography{database}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
