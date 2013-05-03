@@ -321,8 +321,8 @@ preconditioner for iterative solution techniques of the particle transport equat
 \cite{AdamsLarsen2002}. A discontinuous finite element technique is often employ
 in the discretization of the transport equation for unstructured and 
 polygonal/polyhedral grids \cite{MorelWarsaWareing,PWLD,CFEM-PWDL-Warsa,WangRagusa}.
-Employing the same    
-\item 
+Employing the same discretization is an advantage.   
+\item \red{What's the third ?}
 \end{enumerate}
 The motivations for our work / In this work, we wish to assess ... In addition,
 a diffusion equation often serves as a synthetic accelerator or as a
@@ -484,7 +484,7 @@ In this Section, we present the discontinuous Galerkin finite element technique 
 discretize the radiation diffusion equation on arbitrary polygonal grids. Many variants of such
 methods exist for diffusion problems (depending on the choice of stabilization terms, whether 
 the diffusion equation is expressed in its mixed form, \ldots). We refer the Readers to the review
-papers \cite{unification,brezzi etc} for additional details. Here, we employ the Symmetric
+papers \cite{unification,brezzi} for additional details. Here, we employ the Symmetric
 Interior Penalty (SIP) method which we have found to be robust in our test cases and relatively simple 
 to implement.
 %Even though discontinuous Galerkin methods are commonly used in the particle and radiation transport communities, 
@@ -495,7 +495,7 @@ boundary condition to read $E+\frac{1}{\mu}\partial_n E = E^d$ with $\mu\gg 1$. 
 Nitsche \cite{nitsche1971} proposed a consistent formulation for the enforcement of the 
 Dirichlet boundary condition with a penalty term, leading to the weak formulation:
 \begin{equation}
-\label{eq:penalty_nitsche}
+\label{eq:penalty_nitsche_1}
 \int_{\Omega} \grad E \cdot \grad \tf
 - \int_{\partial\Omega} \partial_n E \tf  
 - \int_{\partial\Omega} \partial_n \tf E 
@@ -514,7 +514,7 @@ that the boundary of the domain, $\partial \Omega$, consists of straight edges o
 set of interior and boundary edges is denoted by $\mathcal{E}_h^i$ and $\mathcal{E}_h^{\partial\Omega}$,
 respectively.  Then, the SIP weak form is given by
 \begin{equation}
-\label{eq:penalty_nitsche}
+\label{eq:penalty_nitsche_2}
 \int_{\Omega} \grad E \cdot \grad \tf
 - \int_{\partial\Omega} \mvl{\partial_n E} \jmp{\tf}  
 - \int_{\partial\Omega} \jmp{\partial_n \tf} \mvl{E} 
@@ -535,57 +535,55 @@ elements is not as straightforward as it is when using continuous finite
 elements. To discretize the diffusion equation with discontinuous finite elements, 
 we apply the interior penalty method \cite{Kanschat2007}:
 \begin{equation}
-  -\bn D \bn \phi + \Sigma_a \phi = Q_0\ \textrm{ for } \br \in \mc{D},
+  -\bn D \bn E + \sigma_a E = Q\ \textrm{ for } \br \in \mc{D},
 \end{equation}
 \begin{equation}
-  \frac{1}{4}\phi - \frac{1}{2} D \partial_n \phi =0\ \textrm{ for } \br \in
+  \frac{1}{4} E - \frac{1}{2} D \partial_n E =0\ \textrm{ for } \br \in
   \partial \mc{D}^d,
 \end{equation}
 and
 \begin{equation}
-  -D \partial_n \phi = J^{inc}\ \textrm{ for } \br \in \partial \mc{D}^n,
+  -D \partial_n E = J^{inc}\ \textrm{ for } \br \in \partial \mc{D}^n,
 \end{equation}
-where $D$ is the diffusion coefficient, $\phi$ is the scalar flux, $\Sigma_a$
-is the absorption cross section, $Q_0$ is a volumetric source, $J^{inc}$ is an
-incoming current, $\mc{D}$ is the domain, $\partial \mc{D}^d$ is the boundary 
+where $J^{inc}$ is an incoming current, $\partial \mc{D}^d$ is the boundary 
 where Dirichlet conditions are applied, and $\partial \mc{D}^n$ is the boundary 
 where Neumann conditions are applied.\\ 
 After symmetrization, we get the SPD equation:
 \begin{equation}
-  a(\tilde{\phi},b) = l(b),
+  a(\tilde{E},b) = l(b),
 \end{equation}
 where:
 \begin{equation}
   \begin{split}
-    a (\tilde{\phi},b) =& \(\Sigma_a \tilde{\phi},b\)_{\mc{D}} + 
-    \(D\bn\tilde{\phi},\bn b\)_{\mc{D}} +
-    (\kappa_e\ldb\tilde{\phi}\rdb,\ldb b \rdb)_{E_h^i}\\
-    &+ \(\ldb\tilde{\phi}\rdb,\llb D\partial_n b \rrb\)_{E_h^i}+ \(\llb D
-    \partial_n \tilde{\phi}\rrb,\ldb b \rdb\)_{E_h^i}\\
-    &+ \(\kappa_e \tilde{\phi}, b\)_{\partial \mc{D}^d}
-    -\frac{1}{2}\(\tilde{\phi},D\partial_n b\)_{\partial \mc{D}^d}
-    -\frac{1}{2}\(D\partial_n\tilde{\phi},b\)_{\partial \mc{D}^d}
+    a (\tilde{E},b) =& \(\sigma_a \tilde{E},b\)_{\mc{D}} + 
+    \(D\bn\tilde{E},\bn b\)_{\mc{D}} +
+    (\kappa_e\ldb\tilde{E}\rdb,\ldb b \rdb)_{E_h^i}\\
+    &+ \(\ldb\tilde{E}\rdb,\llb D\partial_n b \rrb\)_{E_h^i}+ \(\llb D
+    \partial_n \tilde{E}\rrb,\ldb b \rdb\)_{E_h^i}\\
+    &+ \(\kappa_e \tilde{E}, b\)_{\partial \mc{D}^d}
+    -\frac{1}{2}\(\tilde{E},D\partial_n b\)_{\partial \mc{D}^d}
+    -\frac{1}{2}\(D\partial_n\tilde{E},b\)_{\partial \mc{D}^d}
   \end{split}
 \end{equation}
 and:
 \begin{equation}
-  l(b) = (Q_0,b)_{\mc{D}} + (J^{inc},b)_{\partial
+  l(b) = (Q,b)_{\mc{D}} + (J^{inc},b)_{\partial
   \mc{D}^r},
 \end{equation}
-with $\tilde{\phi}=(\phi_1 b_1,\hdots, \phi_N b_N)^T$, $b = (b_1,\hdots,b_N)$,
+with $\tilde{E}=(E_1 b_1,\hdots, E_N b_N)^T$, $b = (b_1,\hdots,b_N)$,
 $b_i \in W_{\mc{D}}^h$ $\forall i \in (1,\hdots,N)$,
 the mesh $\mc{T}_h$ is used to discretize $\mc{D}$ into non-overlapping linear
 elements $K$, such that the union of the elements fully covers $\mc{D}$. The
 finite dimensional polynomial space is $W_{\mc{D}}^h = \{f \in L^2(\mc{D});
 f|_K \in V_p(K), \forall K \in \mc{T}_h$\}, where $V_p(K)$ is the space of
 polynomials of degree up to $p$ on element $K$; the set of interior is $E_h^i
-= \cup _{K_1,K_2\in \mc{T}_h}(\partial K_1 \cap \partial K_2)$. We also
+= \cup_{K_1,K_2\in \mc{T}_h}(\partial K_1 \cap \partial K_2)$. We also
 define:
 \begin{align}
-  \ldb \phi \rdb &= \phi^+ - \phi^-,\\
-  \llb \phi \rrb &=  \frac{\phi^++\phi^-}{2},
+  \ldb E \rdb &= E^+ - E^-,\\
+  \llb E \rrb &=  \frac{E^+ + E^-}{2},
 \end{align}
-with $\phi^{\pm} = \lim_{s\rightarrow 0^{\pm}} \phi(\br+s \bs{n}_e)$, where
+with $E^{\pm} = \lim_{s\rightarrow 0^{\pm}} E(\br+s \bs{n}_e)$, where
 $\bs{n}_e$ is the normal unit vector associated with an edge $e$. On the boundary, 
 the normal vector has to be oriented outward whereas the orientation on an
 interior edge is arbitrary.\\
@@ -636,9 +634,6 @@ $\(\textrm{circumradius}=\sqrt{\frac{2\times\textrm{area}}{V \sin
   \label{tab:ortho_length}
 \end{table}
 
-%-----------------------------------------------------------
-\subsection{AMG}
-%-----------------------------------------------------------
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -682,13 +677,7 @@ the solver.
 When a discretization that does not allow polygonal cells is employed, the
 refinement of the mesh may create hanging nodes. Whereas if polygonal cells can
 be used, hanging nodes are not necessary since every time a hanging node
-would be needed, one edge is added to 2 cells.
-
-
-In radiation transport and radiative transfer, lower-order spatial schemes are most commonly used. The AMR techniques employed with such schemes typically rely on gradient-based error estimates \cite{Jessee1998380}, with a few exceptions, e.g., \cite{kanschat-rad-transfer-97}, where an adjoint-based estimator is derived.
-Here, we wish to obtain error estimates for high-order spatial approximations and, therefore, may not rely on simpler estimates such as the gradient of the solution. We have chosen to follow several approaches to estimate the spatial discretization error and propose three means for controlling the spatial error in $S_N$ calculations. The first technique employs two adapted AMR meshes at each adaptivity cycle: a coarse AMR mesh $\mathbb{T}_h^k$ and a fine AMR mesh $\mathbb{T}_{h/2}^k$ obtained by uniform refinement of $\mathbb{T}_h^k$; in the preceding, $k$ denotes the mesh adaptivity cycle index. Error estimates are obtained using the two solutions computed on $\mathbb{T}_{h}^k$ and $\mathbb{T}_{h/2}^k$. This approach is also discussed in \cite{demko-book1,Solin2004449}. The second error estimation technique proposed here is a simple variant of the above technique, where the coarse solution is not computed but approximated by projecting the finer solution onto the coarser mesh. The third approach presented is heuristic and monitors the inter-element jumps of the solution across elements. We discuss these three error estimates below. For goal-oriented AMR, the estimates 
-described here can be re-used ``as is''; see Section~\ref{sec:go-error}.
-
+would be needed, one edge is added to the cell.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -697,14 +686,12 @@ described here can be re-used ``as is''; see Section~\ref{sec:go-error}.
 
 The criterion for refinement is defined as follows: an element $K$ of $\mathbb{T}_h^k$ is selected for refinement if
 \be
-\beta _{K}^{k} \ge \alpha \, \max_{K'\in \mathbb{T}_{h}^k} \left( \beta _{K'}^{k} \right),
+\eta_{K} \ge \alpha \, \max_{K'\in \mathbb{T}_{h}^k} \left( \eta_{K'}^{k} \right),
 \label{eq:criterion}
 \ee
-where $\alpha$ ($0 < \alpha < 1$) is a user-defined fraction and $\beta$ stands for any of the error estimates ($\mu$, $\eta$, $\zeta$, $\widetilde \mu$, $\widetilde \eta$, and $\widetilde \zeta$)
-previously defined in \eqt{eq:error-est1}, \eqt{eq:error-est2}, \eqt{eq:error-jump} or \eqt{eq:error-go}. 
-The criterion of \eqt{eq:criterion} focuses the computational effort on elements with the largest errors; for
-standard AMR, this tends to naturally equi-distribute the spatial error, whereas for goal-oriented approaches
-this aims at reducing the computational effort for a given quantity of interest. 
+where $\alpha$ ($0 < \alpha < 1$) is a user-defined fraction .
+The criterion of \eqt{eq:criterion} focuses the computational effort on
+elements with the largest errors; this tends to naturally equi-distribute the spatial error.
 
 
  
@@ -720,7 +707,10 @@ In this Section, we compare the solution of the problem on an uniform mesh
 with the one on Z-mesh \cite{Stone2003}. We also show that the
 discretization used can easily handle unstructured polygonal grid. Finally, we
 conclude this section with an example of AMR mesh.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Z-mesh}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The Z-mesh is defined as in \Cref{fig_z_mesh} where $\alpha$ is a parameter
 $\in [0,0.5]$. 
 \begin{figure}[H]
@@ -747,16 +737,54 @@ and $D=2$. There is a uniform source of intensity 1.
   \label{u_mesh_sol}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Randomized polygonal grid}
-
-\subsection{AMR}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Example 1} \label{sec:ex1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Adaptive Mesh Refinement}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{amr_zones}
+  \caption{Amr zones.}
+  \label{amr_zone}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Solution on the initial mesh.]
+  {
+    \includegraphics[width=0.45\linewidth]{amr_mesh_0}
+    \label{amr_mesh_0}
+  }
+  \subfigure[Solution on the once refined mesh.]
+  {
+    \includegraphics[width=0.45\linewidth]{amr_mesh_1}
+    \label{amr_mesh_1}
+  }\\
+  \subfigure[Solution on the twice refined mesh.]
+  {
+    \includegraphics[width=0.45\linewidth]{amr_mesh_2}
+    \label{amr_mesh_2}
+  }
+  \subfigure[Solution on the thrice refined mesh.]
+  {
+    \includegraphics[width=0.45\linewidth]{amr_mesh_3}
+    \label{amr_mesh_3}
+  }\\
+  \subfigure[Solution on the four times refined mesh.]
+  {
+    \includegraphics[width=0.45\linewidth]{amr_mesh_4}
+    \label{amr_mesh_4}
+  }
+  \caption{Solution on the successively adapted meshes.}
+  \label{amr_meshes}
+\end{figure}  
+
+On \Cref{amr_mesh_4}, we can see that there are quadrilaterals, pentagons, and
+heptagons.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

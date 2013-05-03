@@ -8,6 +8,7 @@
 *.pdf
 *.blg
 test_amr
+new_amr_test
 pwld_uniform
 z_mesh
 *.asv
