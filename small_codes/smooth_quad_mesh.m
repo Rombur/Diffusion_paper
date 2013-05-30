@@ -20,3 +20,32 @@ figure(1)
 surf(x,y,ones(n+1,n+1))
 view(0,-90)
 
+
+figure(1)
+surf(x,y,ones(n+1,n+1))
+view(0,-90)
+
+output_file1=strcat('.\figs\smooth_quad_mesh_L',int2str(L),'_n',int2str(n));
+print('-dpdf',strcat(output_file1,'.pdf'));
+print('-dpng',strcat(output_file1,'.png'));
+
+%
+close all;
+matID=1;
+srcID=1;
+%%%%%%%%%%%%%%%%%%%%%
+output_file1=strcat(output_file1,'.txt')
+fid=fopen(output_file1,'w');
+fprintf(fid,'%s\n','polygon');
+n2=n*n;
+fprintf(fid,'%d\n',n2);
+for i=1:n
+    for j=1:n
+        fprintf(fid,'%d %g %g %g %g %g %g %g %g  %d %d \n',4,x(i,j)    ,y(i,j)    ,...
+                                                             x(i+1,j)  ,y(i+1,j)  ,...
+                                                             x(i+1,j+1),y(i+1,j+1),...
+                                                             x(i,j+1)  ,y(i,j+1)  ,matID,srcID);
+    end
+end 
+fclose(fid)
+%%%%%%%%%%%%%%%%%%%%%
