@@ -1,5 +1,7 @@
 clear all; close all; clc;
 
+% to be posted online
+
 % This routine generates an nm by nm mesh, commonly known as a
 % Shestakov mesh, with 0 < r < rm and 0 < z < zm. The randomness
 % is controlled by parameter "a", where 0 <= a <= 0.5. A value of 
