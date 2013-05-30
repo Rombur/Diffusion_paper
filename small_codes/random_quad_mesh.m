@@ -20,9 +20,9 @@ end
 figure(1)
 surf(x,y,ones(n+1,n+1))
 view(0,-90)
-output_file1=strcat('random_quad_mesh_L',int2str(L),'_n',int2str(n));
-print('-dpdf',strcat(output_file,'.pdf'));
-print('-dpng',strcat(output_file,'.png'));
+output_file1=strcat('.\figs\random_quad_mesh_L',int2str(L),'_n',int2str(n));
+print('-dpdf',strcat(output_file1,'.pdf'));
+print('-dpng',strcat(output_file1,'.png'));
 
 % keep x=L/2 a straight line
 if(mod(n,2)==0)
@@ -32,9 +32,9 @@ if(mod(n,2)==0)
     surf(xx,y,ones(n+1,n+1))
     view(0,-90)
 end
-output_file2=strcat('random_quad_mesh_mid_x_L',int2str(L),'_n',int2str(n));
-print('-dpdf',strcat(output_file,'.pdf'));
-print('-dpng',strcat(output_file,'.png'));
+output_file2=strcat('.\figs\random_quad_mesh_mid_x_L',int2str(L),'_n',int2str(n));
+print('-dpdf',strcat(output_file2,'.pdf'));
+print('-dpng',strcat(output_file2,'.png'));
 
 % keep x=L/2  and y=L/2 as straight lines
 if(mod(n,2)==0)
@@ -44,9 +44,9 @@ if(mod(n,2)==0)
     surf(xx,yy,ones(n+1,n+1))
     view(0,-90)
 end
-output_file3=strcat('random_quad_mesh_mid_xy_L',int2str(L),'_n',int2str(n));
-print('-dpdf',strcat(output_file,'.pdf'));
-print('-dpng',strcat(output_file,'.png'));
+output_file3=strcat('.\figs\random_quad_mesh_mid_xy_L',int2str(L),'_n',int2str(n));
+print('-dpdf',strcat(output_file3,'.pdf'));
+print('-dpng',strcat(output_file3,'.png'));
 
 %
 close all;
