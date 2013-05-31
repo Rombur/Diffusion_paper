@@ -1,4 +1,4 @@
-clear ll; close all; clc
+clear all; close all; clc
 
 L=1;
 n=100;
@@ -18,21 +18,21 @@ end
 
 figure(1)
 surf(x,y,ones(n+1,n+1))
-view(0,-90)
+view(0,90)
 
 
 figure(1)
 surf(x,y,ones(n+1,n+1))
-view(0,-90)
+view(0,90)
 
 output_file1=strcat('.\figs\smooth_quad_mesh_L',int2str(L),'_n',int2str(n));
 print('-dpdf',strcat(output_file1,'.pdf'));
 print('-dpng',strcat(output_file1,'.png'));
 
 %
-close all;
-matID=1;
-srcID=1;
+% close all;
+matID=0;
+srcID=0;
 %%%%%%%%%%%%%%%%%%%%%
 output_file1=strcat(output_file1,'.txt')
 fid=fopen(output_file1,'w');
