@@ -16,4 +16,5 @@ z_mesh
 *.dvi
 *.zip
 *.spl
+*old*.m
 
