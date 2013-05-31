@@ -5,18 +5,14 @@ n=100;
 h=L/n;
 xi=linspace(-h,L+h,n+1);
 eta=xi;
-
-fraction=0.4;
-
+fraction=0.1;
 
 ind=0;
 for i=1:n+1
-    ax=1;   if(i==1|i==n+1),ax=0;end
     for j=1:n+1
-        ay=1;   if(j==1|j==n+1),ay=0;end
         ind=ind+1;
-        x(ind) = xi(i) + (2*rand(1,1)-1)*h*fraction*ax;
-        y(ind) = eta(j)+ (2*rand(1,1)-1)*h*fraction*ay;
+        x(ind) = xi(i) +fraction*sin(2*pi*xi(i)/L)*sin(2*pi*eta(j)/L);
+        y(ind) = eta(j)+fraction*sin(2*pi*xi(i)/L)*sin(2*pi*eta(j)/L);
     end
 end
 
@@ -235,6 +231,7 @@ c{ID_BR}(ind+skip)=length(v2)+1;
 v2(end+1,:)=[0 L];
 
 
+disp('plotting')
 
 figure(4)
 npoly=0;
@@ -259,7 +256,7 @@ for i = 1:length(c)
 end
 
 %%%%%%%%%%%%%
-output_file1=strcat('.\figs\random_poly_mesh_L',int2str(L),'_n',int2str(n),'_a',num2str(fraction,3));
+output_file1=strcat('.\figs\smooth_poly_mesh_L',int2str(L),'_n',int2str(n),'_a',num2str(fraction,3));
 print('-dpdf',strcat(output_file1,'.pdf'));
 print('-dpng',strcat(output_file1,'.png'));
 saveas(gcf,strcat(output_file1,'.fig'),'fig');

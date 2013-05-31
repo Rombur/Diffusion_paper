@@ -2,7 +2,7 @@ clear all; close all; clc;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % number of subdivisions of the original rectangle
-nc = 8;
+nc = 6;
 % random parameter
 a  = 0.25;
 % rectangle dimensions
@@ -26,7 +26,7 @@ for i = 0:1
     end
 end
 
-d=0.1;
+d=0.09; % play with this
 r(1,1)     = L+d;
 r(1,end)   = L+d;
 r(end,1)   =  -d;
@@ -352,6 +352,7 @@ v2(end+1,:)=[0 L];
 
 
 figure(4)
+npoly=0;
 for i = 1:length(c)
     if all(c{i}~=1)   % If at least one of the indices is 1,
         % then it is an open region and we can't
@@ -359,9 +360,60 @@ for i = 1:length(c)
         %         if(v2(c{i},1)==NaN)
         %             continue
         %         end
-        patch(v2(c{i},1),v2(c{i},2),i); % use color i.
+        [ii,jj]=size(v2(c{i},:));
+        if(ii>0)
+            patch(v2(c{i},1),v2(c{i},2),i); % use color i.
+            npoly=npoly+1;
+        end
+    else
+        disp('pbpbpb')
+        i
+        c{i}
+        error('still cells that are infite regions ... %d',i);
     end
 end
+
+%%%%%%%%%%%%%
+output_file1=strcat('.\figs\shestakov_poly_mesh_nc',int2str(nc),'_a',num2str(a,3));
+print('-dpdf',strcat(output_file1,'.pdf'));
+print('-dpng',strcat(output_file1,'.png'));
+saveas(gcf,strcat(output_file1,'.fig'),'fig');
+%%%%%%%%%%
+matID=0;
+srcID=0;
+%%%%%%%%%%
+output_file1=strcat(output_file1,'.txt')
+fid=fopen(output_file1,'w');
+fprintf(fid,'%s\n','polygon');
+fprintf(fid,'%d\n',npoly);
+for i = 1:length(c)
+    [ii,jj]=size(v2(c{i},:));
+    if(ii>0)
+        nvert=ii;
+        fprintf(fid,'%d  ',nvert);
+        % extract all coord
+        aa=v2(c{i},:);
+        x=aa(:,1);
+        y=aa(:,2);
+        % Find the centroid:
+        cx = mean(x);
+        cy = mean(y);
+        % Step 2: Find the angles:
+        ang = atan2(y - cy, x - cx);
+        % Step 3: Find the correct sorted order:
+        [dummy, order] = sort(ang);
+        % Step 4: Reorder the coordinates:
+        x = x(order);
+        y = y(order);
+        aa(:,1)=x;
+        aa(:,2)=y;
+        fprintf(fid,'%g  ',aa');
+        fprintf(fid,'  %d %d \n',matID,srcID);
+    end
+end
+fclose(fid);
+%%%%%%%%%%%%%
+
 
 % clear all
 % load clown
