@@ -146,6 +146,7 @@ view(0,90)
 output_file1=strcat('.\figs\shestakov_quad_nc',int2str(nc),'_a',num2str(a));
 print('-dpdf',strcat(output_file1,'.pdf'));
 print('-dpng',strcat(output_file1,'.png'));
+saveas(gcf,strcat(output_file1,'.fig'),'fig');
 
 
 %

@@ -1,4 +1,4 @@
-clear ll; close all; clc
+clear all; close all; clc
 % random mesh generated for quadrilaterals
 
 L=1;
@@ -19,10 +19,11 @@ end
 
 figure(1)
 surf(x,y,ones(n+1,n+1))
-view(0,-90)
-output_file1=strcat('.\figs\random_quad_mesh_L',int2str(L),'_n',int2str(n));
+view(0,90)
+output_file1=strcat('.\figs\random_quad_mesh_L',int2str(L),'_n',int2str(n),'_a',num2str(fraction,3));
 print('-dpdf',strcat(output_file1,'.pdf'));
 print('-dpng',strcat(output_file1,'.png'));
+saveas(gcf,strcat(output_file1,'.fig'),'fig');
 
 % keep x=L/2 a straight line
 if(mod(n,2)==0)
@@ -30,11 +31,12 @@ if(mod(n,2)==0)
     xx(n/2+1,:)=L/2;
     figure(2)
     surf(xx,y,ones(n+1,n+1))
-    view(0,-90)
+    view(0,90)
 end
-output_file2=strcat('.\figs\random_quad_mesh_mid_x_L',int2str(L),'_n',int2str(n));
+output_file2=strcat('.\figs\random_quad_mesh_mid_x_L',int2str(L),'_n',int2str(n),'_a',num2str(fraction,3));
 print('-dpdf',strcat(output_file2,'.pdf'));
 print('-dpng',strcat(output_file2,'.png'));
+saveas(gcf,strcat(output_file2,'.fig'),'fig');
 
 % keep x=L/2  and y=L/2 as straight lines
 if(mod(n,2)==0)
@@ -42,16 +44,17 @@ if(mod(n,2)==0)
     yy(:,n/2+1)=L/2;
     figure(3)
     surf(xx,yy,ones(n+1,n+1))
-    view(0,-90)
+    view(0,90)
 end
-output_file3=strcat('.\figs\random_quad_mesh_mid_xy_L',int2str(L),'_n',int2str(n));
+output_file3=strcat('.\figs\random_quad_mesh_mid_xy_L',int2str(L),'_n',int2str(n),'_a',num2str(fraction,3));
 print('-dpdf',strcat(output_file3,'.pdf'));
 print('-dpng',strcat(output_file3,'.png'));
+saveas(gcf,strcat(output_file3,'.fig'),'fig');
 
 %
-close all;
-matID=1;
-srcID=1;
+% close all;
+matID=0;
+srcID=0;
 %%%%%%%%%%%%%%%%%%%%%
 output_file1=strcat(output_file1,'.txt')
 fid=fopen(output_file1,'w');

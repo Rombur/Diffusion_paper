@@ -1,7 +1,7 @@
 clear all; close all; clc
 
 L=1;
-n=100;
+n=10;
 h=L/n;
 xi=linspace(0,L,n+1);
 eta=xi;
@@ -25,9 +25,10 @@ figure(1)
 surf(x,y,ones(n+1,n+1))
 view(0,90)
 
-output_file1=strcat('.\figs\smooth_quad_mesh_L',int2str(L),'_n',int2str(n));
+output_file1=strcat('.\figs\smooth_quad_mesh_L',int2str(L),'_n',int2str(n),'_a',num2str(fraction,3));
 print('-dpdf',strcat(output_file1,'.pdf'));
 print('-dpng',strcat(output_file1,'.png'));
+saveas(gcf,strcat(output_file1,'.fig'),'fig');
 
 %
 % close all;
